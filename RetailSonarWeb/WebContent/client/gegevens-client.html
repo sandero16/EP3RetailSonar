@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gegevens</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="assets/css/reset.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/styles.css"/>
+    <script src="assets/js/stores.js"></script>
+    <style>
+
+h1{
+	padding: 30px;
+	font-weight: bold;
+    font-size: 24px;
+}
+h2{
+	font-size:20px;
+	padding: 20px;
+}
+td{
+	text-align:center;
+	padding: 10px;
+}
+.opslaan{
+	height:auto;
+	width:auto;
+	margin-top:20px;
+	margin-bottom:30px;
+	padding: 10px;
+	background-color:#ff6d0e;
+	border-radius:12px;
+	font-size:20px;
+	text-align:center;
+	
+}
+.opslaan:hover{
+	cursor:pointer;
+}
+.tablestyle{
+	text-align: center;
+	width:auto;
+	border: 2px solid black;
+	border-radius:12px;	
+	margin-right:100px;
+	margin-left:100px;
+	padding:30px;
+}
+.input{
+	width:100%;
+}
+.map{
+	width:auto;
+	height:500px;
+	background:white;
+	margin: 20px 100px 20px 100px;
+	border:2px solid black;
+	border-radius:12px;
+}
+
+    </style>
+</head>
+<body>
+	
+	<header>
+      <img class="logo" src="images/retailsonar.svg" alt="heart" />
+     <!--<button class="logout" onclick="logoutFunction()">Log Out</button>-->
+    </header>
+    <div style="height:30px;"></div>
+    <div style="height:50px;">
+    <h1>Gegevens</h1>
+    </div>
+    <h2>Algemene Gegevens</h2>
+    <div class="tablestyle">
+	    <table style="width:100%;">
+	    	<tr>
+	    		<td>Naam</td>
+	    		<td> <input id="naam" type="text" class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Straat</td>
+	    		<td><input id="straat" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Nummer</td>
+	    		<td><input id="nummer" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Postcode</td>
+	    		<td><input id="postcode" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Gemeente</td>
+	    		<td><input id="gemeente" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    </table>
+    </div>
+    <h2>Gebouw Eigenschappen</h2>
+    <div class="tablestyle">
+	    <table style="width:100%;">
+	    	<tr>
+	    		<td>Oppervlakte</td>
+	    		<td> <input type="text" class="input" data-value="#{}" required/></td>
+	    		<td>Vierkante meter</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Gevelbreedte</td>
+	    		<td><input type="text"  class="input" data-value="#{}" required/></td>
+	    		<td>Meter</td>
+	    	</tr>
+	    	<tr>
+	    		<td>GevelHoogte</td>
+	    		<td><input type="text"  class="input" data-value="#{}" required/></td>
+	    		<td>Meter</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Zichtbaarheid</td>
+	    		<td><input type="text"  class="input" data-value="#{}"/></td>
+	    		<td></td>
+	    	</tr>
+	    </table>
+    </div>
+    <div id="map" class="map"></div>
+    <div id="storesNearBy"></div>
+   
+    
+    
+    
+    <button id="submit" class="opslaan" onclick="#{}">Opslaan</button>
+   
+    <script>
+      function initMap() {
+    	var mapOptions = {
+    			zoom: 8,
+    	          center: {lat: 50.83, lng: 4.35},
+    	          mapTypeId: google.maps.MapTypeId.roadmap,
+    	  	    clickableIcons:false,
+    	  	    disableDoubleClickZoom:true,
+    	  	    draggable:false,
+    	  	    fullscreenControl:false,
+    	  	    keyboardShortcuts:false,
+    	  	    mapTypeControl:false,
+    	  	    panControl:false,
+    	  	    rotateControl:false,
+    	  	    scaleControl:false,
+    	  	    scrollwheel:false,
+    	  	    streetViewControl:false,
+    	  	    zoomControl:false,		
+    	};
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var geocoder = new google.maps.Geocoder();
+
+        document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, map);
+        });
+      }
+
+      function geocodeAddress(geocoder, resultsMap) {
+    	  var space =" ";
+    	  var straat = document.getElementById('straat').value;
+    	  var nummer = document.getElementById('nummer').value;
+    	  var postcode = document.getElementById('postcode').value;
+    	  var gemeente = document.getElementById('gemeente').value;
+        var address = straat.concat(space).concat(nummer).concat(space).concat(gemeente);
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              
+            });
+            resultsMap.setZoom(15);
+          } 
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&callback=initMap">
+    </script>
+    
+</body>
+</html>

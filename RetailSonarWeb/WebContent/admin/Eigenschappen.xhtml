@@ -1,0 +1,438 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jstl/core"
+	>
+<head>
+<title>Eigenschappen</title>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&amp;libraries=places"></script>
+
+<link rel="shortcut icon" type="image/x-icon"
+	href="/RetailSonarWeb/images/favicon.png" />
+
+</head>
+<f:metadata>
+	<f:viewParam name="bedrijf"
+		value="#{EigenschappenController.bedrijfId}" />
+</f:metadata>
+<body>
+	<div class="header">
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+		<!--<button class="logout" onclick="logoutFunction()">Log Out</button>-->
+	</div>
+	<div class="leading">
+		<p class="leading-bigtext">Filiaal Toevoegen</p>
+		<p class="leading-text"></p>
+	</div>
+	<div style="height: 30px;"></div>
+	<div style="height: 50px;">
+		<h1>Extra Eigenschappen</h1>
+	</div>
+	<div style="padding: 30px" />
+	<h2>Eigenschappen</h2>
+	<h:form>
+		<div class="tablestyle">
+			<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+				var="cat" style="width: 100%;">
+
+				<h:column>
+					<div class="tablestyle">
+						<h:outputText value="Geen eigenschappen"
+							rendered="#{empty EigenschappenController.findAllEigenschappen(cat.getCategorieId())}" />
+						<h:dataTable style="width:100%;"
+							value="#{EigenschappenController.findAllEigenschappen(cat.getCategorieId())}"
+							var="eig"
+							rendered="#{not empty EigenschappenController.findAllEigenschappen(cat.getCategorieId())}">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="#{cat.getNaam()}" />
+								</f:facet>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputLabel escape="false"
+										value="Selecteer voor &lt;br /&gt; toevoeging/verwijdering &lt;br /&gt; eigenschap aan bedrijf" />
+								</f:facet>
+								<h:selectBooleanCheckbox style="vertical-align:middle;"
+									value="#{EigenschappenController.checked[eig.eigenschappenId]}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputLabel value="Naam" />
+								</f:facet>
+								<h:outputText value="#{eig.getNaam()}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Menu" />
+								</f:facet>
+								<h:outputText value="Geen Menu"
+									rendered="#{empty EigenschappenController.createMenuList(eig.getMenustring())}" />
+								<h:selectOneMenu
+									rendered="#{not empty EigenschappenController.createMenuList(eig.getMenustring())}"
+									style="border-radius:12px;border:1px solid black;">
+									<f:selectItem itemLabel="Selecteer" itemValue="" />
+									<f:selectItems
+										value="#{EigenschappenController.createMenuList(eig.getMenustring())}"
+										var="menu" itemLabel="#{menu}" itemValue="#{menu}" />
+								</h:selectOneMenu>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputLabel escape="false"
+										value="Selecteer voor &lt;br /&gt; complete verwijdering &lt;br /&gt; eigenschappen" />
+								</f:facet>
+								<h:selectBooleanCheckbox style="vertical-align:middle;"
+									value="#{EigenschappenController.checkedForDeletion[eig.eigenschappenId]}" />
+							</h:column>
+
+						</h:dataTable>
+					</div>
+				</h:column>
+
+			</h:dataTable>
+			<h:commandButton class="newuserlite" id="submit"
+				value="Eigenschappen Opslaan"
+				action="#{EigenschappenController.voegEigenschapBedrijfToe()}" />
+			<h:commandButton class="newuserlite" id="submitForDeletion"
+				value="Verwijdering Eigenschap"
+				action="#{EigenschappenController.verwijderEigenschap()}" />
+		</div>
+
+	</h:form>
+	<div style="padding: 30px" />
+
+	<h2>Custom Eigenschappen</h2>
+	<h:form>
+		<div style="padding: 30px" />
+		<div class="tablestyle">
+			<h:outputText value="Geen eigenschappen"
+				rendered="#{empty EigenschappenController.findAllCustomEigenschappenBedrijf()}" />
+			<br />
+			<h:dataTable var="ceig"
+				value="#{EigenschappenController.findAllCustomEigenschappenBedrijf()}"
+				rendered="#{not empty EigenschappenController.findAllCustomEigenschappenBedrijf()}"
+				style="width:100%;">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Naam Eigenschap" />
+					</f:facet>
+					<h:outputText value="#{ceig.getNaam()}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Menu" />
+					</f:facet>
+					<h:outputText value="Geen Menu"
+						rendered="#{empty EigenschappenController.createMenuList(ceig.getMenuString())}" />
+					<h:selectOneMenu
+						rendered="#{not empty EigenschappenController.createMenuList(ceig.getMenuString())}"
+						style="border-radius:12px;border:1px solid black;">
+						<f:selectItem itemLabel="Selecteer" itemValue="" />
+						<f:selectItems
+							value="#{EigenschappenController.createMenuList(ceig.getMenuString())}"
+							var="menu" itemLabel="#{menu}" itemValue="#{menu}" />
+					</h:selectOneMenu>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel escape="false"
+							value="Selecteer voor &lt;br /&gt; complete verwijdering &lt;br /&gt; eigenschappen" />
+					</f:facet>
+					<h:selectBooleanCheckbox style="vertical-align:middle;"
+						value="#{EigenschappenController.checkedForCustomDeletion[ceig.getCustomEigenschap_id()]}" />
+				</h:column>
+			</h:dataTable>
+			<h:commandButton class="newuserlite" id="submitForCustomDeletion"
+				value="Verwijdering Custom Eigenschap"
+				action="#{EigenschappenController.verwijderCustomEigenschap()}" />
+
+		</div>
+	</h:form>
+	<div style="padding: 30px;" />
+	
+	<h2>Afmetingen</h2>
+	<h:form>
+		<div class="tablestyle">
+			<h:outputText value="Gevelafstand"
+				rendered="#{EigenschappenController.checkVoorAanwezigAfstand()}" />
+			<br />		
+			<br />	
+			<h:outputText value="Oppervlakte"
+				rendered="#{EigenschappenController.checkVoorAanwezigOppervlak()}" />
+			<br />	
+			<br />	
+			<br />	
+			<h:commandButton class="newuserlite" id="submit"
+				value="Afstand toevoegen"
+				action="#{EigenschappenController.voegAfstandToe()}" />
+			<h:commandButton class="newuserlite" id="submitForDeletion"
+				value="Oppervlakte toevoegen"
+				action="#{EigenschappenController.voegOppervlakteToe()}" />
+		</div>
+
+	</h:form>
+	<div style="padding: 30px" />
+	
+	
+	
+	<h2>Categorieën</h2>
+	<div style="padding: 30px;" />
+	<h:form>
+		<div class="tablestyle">
+			<h:outputText value="Geen categorieën"
+				rendered="#{empty EigenschappenController.findAllCategorie()}" />
+			<br />
+			<h:dataTable var="cat"
+				value="#{EigenschappenController.findAllCategorie()}"
+				rendered="#{not empty EigenschappenController.findAllCategorie()}"
+				style="width:100%;">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Naam categorie" />
+					</f:facet>
+					<h:outputText value="#{cat.getNaam()}" />
+				</h:column>
+				<!--<h:column>
+					<f:facet name="header">
+						<h:outputText value="Verwijderen" />
+					</f:facet>
+					<p:commandButton class="verwijder"
+						action="#{EigenschappenController.verwijderCategorie(cat.getCategorieId())}"
+						value="verwijder">
+						<p:confirm header="Bevestiging"
+							message="Bent u zeker dat u deze categorie wilt verwijderen?" />
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Ja" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</h:column>-->
+			</h:dataTable>
+		</div>
+	</h:form>
+	<div style="padding: 30px;" />
+	<h2>Nieuwe Eigenschap</h2>
+	<div style="padding: 30px" />
+	<h3>Standaard Eigenschap</h3>
+	<div style="padding: 10px" />
+	<h:form>
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td><h:outputLabel value="Naam eigenschap" /></td>
+					<td><h:inputText class="input" a:placeholder="Naam eigenschap"
+							value="#{EigenschappenController.eigenschap.naam}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Categorie" /></td>
+					<td><h:selectOneMenu
+							value="#{EigenschappenController.eigenschap.categorieId}"
+							required="true" id="categorie"
+							style="border-radius:12px;border:1px solid black;"
+							requiredMessage="Selecteer een categorie">
+							<f:selectItem itemLabel="Selecteer" itemValue="" />
+							<f:selectItems
+								value="#{EigenschappenController.findAllCategorie()}" var="cat"
+								itemLabel="#{cat.getNaam()}" itemValue="#{cat.categorieId}" />
+						</h:selectOneMenu></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Eenheid" /></td>
+					<td><h:inputText class="input"
+							a:placeholder="Eenheid of nadere verklaring eigenschap"
+							value="#{EigenschappenController.eigenschap.eenheid}" /></td>
+				</tr>
+			</table>
+			<h:commandButton class="newuserlite" id="submitForAddition"
+				value="Opslaan"
+				action="#{EigenschappenController.voegEigenschapToe()}" />
+
+
+		</div>
+	</h:form>
+	<div style="padding: 10px" />
+	<h3>Drop down menu</h3>
+	<div style="padding: 10px" />
+	<h:form>
+		<div class="tablestyle">
+			<table style="width: 100%">
+				<tr>
+					<td><h:outputLabel value="Naam eigenschap" /></td>
+					<td><h:inputText class="input" a:placeholder="Naam eigenschap"
+							value="#{EigenschappenController.eigenschapDropdownMenu.naam}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Categorie" /></td>
+					<td><h:selectOneMenu
+							value="#{EigenschappenController.eigenschapDropdownMenu.categorieId}"
+							required="true" id="categorie"
+							style="border-radius:12px;border:1px solid black;"
+							requiredMessage="Selecteer een categorie">
+							<f:selectItem itemLabel="Selecteer" itemValue="" />
+							<f:selectItems
+								value="#{EigenschappenController.findAllCategorie()}" var="cat"
+								itemLabel="#{cat.getNaam()}" itemValue="#{cat.categorieId}" />
+						</h:selectOneMenu></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie1" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListOption1}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie2" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListOption2}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie3" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListOption3}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie4" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListOption4}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie5" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListOption5}" /></td>
+				</tr>
+			</table>
+			<h:commandButton class="newuserlite" id="submitForAddition"
+				value="Opslaan"
+				action="#{EigenschappenController.voegEigenschapDropdownMenuToe()}" />
+		</div>
+	</h:form>
+	<div style="padding: 30px;" />
+	<h2>Nieuwe Custom Eigenschap</h2>
+	<div style="padding: 30px" />
+	<h3>Standaard Custom Eigenschap</h3>
+	<div style="padding: 10px" />
+	<h:form>
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td><h:outputLabel value="Naam eigenschap" /></td>
+					<td><h:inputText class="input" a:placeholder="Naam eigenschap"
+							value="#{EigenschappenController.customEigenschap.naam}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Categorie" /></td>
+					<td><h:selectOneMenu
+							value="#{EigenschappenController.customEigenschap.categorieId}"
+							required="true" id="categorie"
+							style="border-radius:12px;border:1px solid black;"
+							requiredMessage="Selecteer een categorie">
+							<f:selectItem itemLabel="Selecteer" itemValue="" />
+							<f:selectItems
+								value="#{EigenschappenController.findAllCategorie()}" var="cat"
+								itemLabel="#{cat.getNaam()}" itemValue="#{cat.categorieId}" />
+						</h:selectOneMenu></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Eenheid" /></td>
+					<td><h:inputText class="input"
+							a:placeholder="Eenheid of nadere verklaring eigenschap"
+							value="#{EigenschappenController.customEigenschap.eenheid}" /></td>
+				</tr>
+			</table>
+			<h:commandButton class="newuserlite" id="submit" value="Opslaan"
+				action="#{EigenschappenController.voegCustomEigenschapToe()}" />
+
+		</div>
+	</h:form>
+	<div style="padding: 10px" />
+	<h3>Drop down menu</h3>
+	<div style="padding: 10px" />
+	<h:form>
+		<div class="tablestyle">
+			<table style="width: 100%">
+				<tr>
+					<td><h:outputLabel value="Naam eigenschap" /></td>
+					<td><h:inputText class="input" a:placeholder="Naam eigenschap"
+							value="#{EigenschappenController.customEigenschapDropdownMenu.naam}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Categorie" /></td>
+					<td><h:selectOneMenu
+							value="#{EigenschappenController.customEigenschapDropdownMenu.categorieId}"
+							required="true" id="categorie"
+							style="border-radius:12px;border:1px solid black;"
+							requiredMessage="Selecteer een categorie">
+							<f:selectItem itemLabel="Selecteer" itemValue="" />
+							<f:selectItems
+								value="#{EigenschappenController.findAllCategorie()}" var="cat"
+								itemLabel="#{cat.getNaam()}" itemValue="#{cat.categorieId}" />
+						</h:selectOneMenu></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie1" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListCustomOption1}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie2" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListCustomOption2}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie3" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListCustomOption3}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie4" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListCustomOption4}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="optie5" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.menuListCustomOption5}" /></td>
+				</tr>
+			</table>
+			<h:commandButton class="newuserlite" id="submitForAddition"
+				value="Opslaan"
+				action="#{EigenschappenController.voegCustomEigenschapDropdownMenuToe()}" />
+		</div>
+	</h:form>
+	<div style="padding: 30px;" />
+	<h2>Nieuwe Categorie</h2>
+	<div style="padding: 30px;" />
+	<h:form>
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td><h:outputText value="Naam categorie" /></td>
+					<td><h:inputText class="input"
+							value="#{EigenschappenController.categorie.naam}" /></td>
+				</tr>
+			</table>
+			<h:commandButton class="newuserlite" id="submit" value="Opslaan"
+				action="#{EigenschappenController.voegCategorieToe()}" />
+		</div>
+	</h:form>
+	<a class="newuser" style="text-decoration: none;"
+		href="Dashboard-admin.faces?faces-redirect=true">Terug</a>
+
+</body>
+</html>

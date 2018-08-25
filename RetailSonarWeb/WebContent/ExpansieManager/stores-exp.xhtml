@@ -1,0 +1,542 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:o="http://omnifaces.org/ui">
+<!-- xmlns:h="http://xmlns.jcp.org/jsf/html" -->
+
+<h:head>
+	<title>Filiaal Test</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+	<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&amp;libraries=places"></script>
+	<!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&callback=initMap">
+    </script>-->
+	<link rel="shortcut icon" type="image/x-icon"
+		href="/RetailSonarWeb/images/favicon.png" />
+	<style type="text/css">
+.map {
+	width: auto;
+	height: 500px;
+	background: white;
+	margin: 20px 100px 20px 100px;
+	border: 2px solid black;
+	border-radius: 12px;
+}
+
+.map2 {
+	width: auto;
+	height: auto;
+	background: white;
+	margin: 20px 100px 20px 100px;
+	border: 2px solid black;
+	border-radius: 12px;
+	text-align: center;
+}
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	top: 150%;
+	left: 50%;
+	margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+	content: " ";
+	position: absolute;
+	bottom: 100%; /* At the top of the tooltip */
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+</style>
+</h:head>
+
+<f:metadata>
+	<f:viewParam name="filiaalId" value="#{FiliaalController.filiaalId}" />
+	<f:viewParam name="bedrijf"
+		value="#{EigenschappenController.bedrijfId}" />
+	<f:viewParam name="filiaalId"
+		value="#{EigenschappenController.filiaalId}" />
+	<f:viewAction action="#{FiliaalController.findFiliaalGegevens}" />
+
+</f:metadata>
+<body>
+	<div class="header">
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+		<!--<button class="logout" onclick="logoutFunction()">Log Out</button>-->
+	</div>
+	<div class="leading">
+		<p class="leading-bigtext">Filiaal Wijzigen</p>
+		<p class="leading-text"></p>
+	</div>
+	<div style="height: 30px;"></div>
+	<div style="height: 50px;">
+		<h1>Gegevens</h1>
+	</div>
+	<!---->
+	<input type="hidden" id="naamfiliaalhidden"
+		value="#{FiliaalController.filiaalGegevens.bedrijf.naam}" />
+	<input type="hidden" id="gemeentehidden"
+		value="#{FiliaalController.filiaalGegevens.gemeente}" />
+	<div style="height: 30px;" />
+	<h:form id="form" prependId="false" enctype="multipart/form-data">
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td>Naam</td>
+					<td><h:inputText id="naamFiliaal" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevens.naamFiliaal}"
+							required="true"
+							requiredMessage="Voer een naam in voor het filiaal" /> <h:message
+							for="naamFiliaal" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Straat</td>
+					<td><h:inputText id="straat" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevens.straat}"
+							required="true" requiredMessage="Voer een straat in" /> <h:message
+							for="straat" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Nummer</td>
+					<td><h:inputText id="nummer" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevens.nummer}"
+							required="true" requiredMessage="Voer een nummer in" /> <h:message
+							for="nummer" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Postcode</td>
+					<td><h:inputText id="postcode" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevens.postcode}"
+							required="true" requiredMessage="Voer een postcode in" /> <h:message
+							for="postcode" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Gemeente</td>
+					<td><h:inputText id="gemeente" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevens.gemeente}"
+							required="true" requiredMessage="Voer een gemeente in" /> <h:message
+							for="gemeente" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Voeg RegioManager Toe</td>
+					<td><h:selectOneMenu id="regiomanagers" var="f"
+							value="#{FiliaalController.filiaalGegevens.userId}"
+							style="border-radius:12px;border:1px solid black;">
+							<f:selectItem itemLabel="Selecteer" itemValue="" />
+							<f:selectItems
+								value="#{UserController.findAllRegioManagersBedrijf()}" var="f"
+								itemLabel="#{f.username}" itemValue="#{f.userId}" />
+
+						</h:selectOneMenu></td>
+				</tr>
+			</table>
+		</div>
+		<div style="padding: 30px" />
+		<h2>Eigenschappen</h2>
+		<div style="padding: 10px" />
+		<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+			var="cat" style="width: 100%;">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="#{cat.getNaam()}" />
+				</f:facet>
+			</h:column>
+			<h:column>
+				<div class="tablestyle">
+					<h:outputText value="Geen eigenschappen"
+						rendered="#{empty EigenschappenController.findAllEigenschappenFiliaal(cat.getCategorieId())}" />
+					<h:dataTable style="width:100%;"
+						value="#{EigenschappenController.findAllEigenschappenFiliaal(cat.getCategorieId())}"
+						var="eig"
+						rendered="#{not empty EigenschappenController.findAllEigenschappenFiliaal(cat.getCategorieId())}">
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Naam"/>
+							</f:facet>
+							
+							<h:outputLabel value="#{eig.getNaam()}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Waarde"/>
+							</f:facet>
+							<h:outputLabel value="/" rendered = "#{empty EigenschappenController.toString(eig.getInhoud())}"/>
+							<h:outputLabel  value="#{eig.inhoud}" rendered="#{not empty EigenschappenController.toString(eig.getInhoud())}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Eenheid"/>
+							</f:facet>
+							<h:outputLabel value="/" rendered = "#{empty EigenschappenController.toString(eig.getEenheid())}"/>
+							<h:outputLabel value="#{eig.getEenheid()}" rendered="#{not empty EigenschappenController.toString(eig.getEenheid())}"/>
+							
+						</h:column>
+						
+					</h:dataTable>
+				</div>
+			</h:column>
+		</h:dataTable>
+		<div style="padding: 30px" />
+		<h2>Custom Eigenschappen</h2>
+		<div style="padding: 10px" />
+		<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+			var="cat" style="width: 100%;">
+			<h:column>
+				<h:outputText value="#{cat.getNaam()}" />
+			</h:column>
+			<h:column>
+				<div class="tablestyle">
+					<h:outputText value="Geen eigenschappen"
+						rendered="#{empty EigenschappenController.findAllCustomEigenschappenFiliaal(cat.getCategorieId())}" />
+					<h:dataTable style="width:100%;"
+						value="#{EigenschappenController.findAllCustomEigenschappenFiliaal(cat.getCategorieId())}"
+						var="eig"
+						rendered="#{not empty EigenschappenController.findAllCustomEigenschappenFiliaal(cat.getCategorieId())}">
+
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Naam"/>
+							</f:facet>
+							<h:outputLabel value="#{eig.getNaam()}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Waarde"/>
+							</f:facet>
+							<h:outputLabel value="/" rendered = "#{empty EigenschappenController.toString(eig.getInhoud())}"/>
+							<h:outputLabel  value="#{eig.inhoud}" rendered = "#{not empty EigenschappenController.toString(eig.getInhoud())}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Eenheid" />
+							</f:facet>
+							<h:outputLabel value="/" rendered = "#{empty EigenschappenController.toString(eig.getEenheid())}"/>
+							<h:outputLabel value="#{eig.getEenheid()}" rendered="#{not empty EigenschappenController.toString(eig.getEenheid())}"/>
+						</h:column>
+					</h:dataTable>
+				</div>
+			</h:column>
+		</h:dataTable>
+		
+		
+		<div style="padding: 30px" />
+		<h2 >GevelAfstand</h2>
+		<div style="padding: 10px" />
+		<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+			var="cat" style="width: 100%;">
+			<h:column>
+				<h:outputText value="" />
+			</h:column>
+			<h:column rendered="#{EigenschappenController.checkVoorAanwezigAfstandFiliaal()}">
+				<div class="tablestyle">
+					<h:outputText value="Geen Afmetingen"
+						rendered="#{empty EigenschappenController.checkVoorAfstand()}" />
+					<h:dataTable style="width:100%;"
+						value="#{EigenschappenController.checkVoorAfstand()}"
+						var="afst"
+						rendered="#{not empty EigenschappenController.checkVoorAfstand()}">
+
+
+				
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Afstand"/>
+							</f:facet>
+							<h:outputLabel  value="#{afst.waarde}"/>
+						</h:column>
+						
+					</h:dataTable>
+				</div>
+			</h:column>
+		</h:dataTable>
+		
+		<div style="padding: 30px" />
+		<h2>Oppervlakte</h2>
+		<div style="padding: 10px" />
+		<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+			var="cat" style="width: 100%;">
+			<h:column>
+				<h:outputText value="" />
+			</h:column>
+			<h:column rendered="#{EigenschappenController.checkVoorAanwezigOppervlakFiliaal()}">
+				<div class="tablestyle">
+					<h:outputText value="Geen Oppervlakte"
+						rendered="#{empty EigenschappenController.checkVoorOppervlak()}" />
+					<h:dataTable style="width:100%;"
+						value="#{EigenschappenController.checkVoorOppervlak()}"
+						var="opp"
+						rendered="#{not empty EigenschappenController.checkVoorOppervlak()}">
+
+
+				
+						<h:column>
+							<f:facet name="header">
+								<h:outputLabel value="Oppervlak"/>
+							</f:facet>
+							<h:outputLabel  value="#{opp.waarde}"/>
+						</h:column>
+						
+					</h:dataTable>
+				</div>
+			</h:column>
+		</h:dataTable>
+		
+		<h:commandButton id="maakfiliaal" class="opslaan"
+			action="#{FiliaalController.wijzigFiliaal()}" value="Opslaan">
+		</h:commandButton>
+
+	</h:form>
+	<div id="map" class="map"></div>
+
+
+	<script>
+   		function test2(){
+   			window.alert("test2");
+   			var object = Packages.jsf.controller.GebruikerController.test();
+   			window.alert(object.value);
+   			
+   		}
+   </script>
+	<script type="text/javascript">
+    var resultLat = "lat: ";
+    var resultLng = "lng: ";
+    var resultTot = "";
+    var resp = {lat: 51.0543422, lng: 3.717424299999948};
+    var map;
+    var pos;
+      function initMap() {
+    	  
+    	var mapOptions = {
+    			zoom: 8,
+  	          center: {lat: 50.83, lng: 4.35},
+  	          mapTypeId: google.maps.MapTypeId.roadmap,
+  	  	    clickableIcons:false,
+  	  	    disableDoubleClickZoom:true,
+  	  	    //draggable:false,
+  	  	    fullscreenControl:false,
+  	  	    keyboardShortcuts:false,
+  	  	    mapTypeControl:false,
+  	  	    panControl:false,
+  	  	    rotateControl:false,
+  	  	    scaleControl:false,
+  	  	    //scrollwheel:false,
+  	  	    streetViewControl:false,
+  	  	    //zoomControl:false,		
+    	};
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var geocoder = new google.maps.Geocoder();
+        
+        geocodeAddress(geocoder, map);
+        
+        
+
+        
+        /*document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, map);
+        });
+        
+        document.getElementById('nearbyS').addEventListener('click', function() {
+           nearBySearch();
+        	//test();  
+        });*/
+        
+      }
+	  
+      function geocodeAddress(geocoder, resultsMap) {
+    	
+    	  map = resultsMap;
+    	  var space =" ";
+    	  var naamfiliaal = document.getElementById('naamfiliaalhidden').value;
+    	  var gemeente = document.getElementById('gemeentehidden').value;
+          var address = naamfiliaal.concat(space).concat(gemeente);
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            pos = results[0].geometry.location;
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              icon: '/RetailSonarWeb/images/custommarker-small.png',
+            });
+            resultsMap.setZoom(15);
+            
+          } 
+        });
+        
+      }     
+      function nearBySearch(){
+    	  var mapOptions = {
+      			zoom: 15,
+      	          center: pos,
+      	          mapTypeId: google.maps.MapTypeId.roadmap,
+      	  	    clickableIcons:false,
+      	  	    disableDoubleClickZoom:false,
+      	  	    draggable:false,
+      	  	    fullscreenControl:false,
+      	  	    keyboardShortcuts:false,
+      	  	    mapTypeControl:false,
+      	  	    panControl:false,
+      	  	    rotateControl:false,
+      	  	    scaleControl:false,
+      	  	    scrollwheel:false,
+      	  	    streetViewControl:false,
+      	  	    zoomControl:false,		
+      	};
+    	  map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    	  var service = new google.maps.places.PlacesService(map);
+    	  infowindow = new google.maps.InfoWindow();
+    	 
+		  service.nearbySearch({
+	          location: pos,
+	          radius: 500,
+	          type: ['supermarket', 'store']
+	        }, callback);
+	  }
+      function callback(results, status) {
+    	  var body = document.getElementById('storesNearBy');
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  var array = [];
+      	  var arrayasstring = "";
+      	var marker = new google.maps.Marker({
+            map: map,
+            position: pos,
+            icon: '/RetailSonarWeb/images/custommarker-small.png',
+          });
+       if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i &lt; results.length; i++) {
+        	  array.push(results[i].name);
+              array.push(results[i].geometry.location);
+              createMarker(results[i]); 
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(results[i].name));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+          }
+          
+          tb1.appendChild(tbdy);
+          body.appendChild(tb1);
+          for(var j = 0; j &lt; array.length;j++){
+           	  arrayasstring = arrayasstring.concat(String(array[j]));
+          	  if(j &lt; array.length){
+          		  arrayasstring = arrayasstring.concat(",");
+          	  }
+          }
+          
+        }
+        
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+      function call(results, status) {
+    	  alert('call started');
+    	  var array = [];
+      	  var arrayasstring = "";
+    	  var body = document.getElementById('storesNearBy');
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+        	  alert('status ok');
+            for (var i = 0; i &lt; results.length; i++) {
+            	array.push(results[i].name);
+                array.push(results[i].geometry.location);
+              createMarker(results[i]);
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(results[i].name));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+              
+            }
+            tb1.appendChild(tbdy);
+            body.appendChild(tb1);
+            for(var j = 1; j = array.length; j++){
+                arrayasstring.concat(String(array[j-1]));
+          	  if(i &lt; array.length){
+          		  arrayasstring.concat(",");
+          	  }
+            }
+          
+            //document.getElementById('form:nearbystoreslist').innerHTML = arrayasstring;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: pos,
+                
+              });
+         }
+          
+    }
+      function test(){
+    	  var body = document.getElementById('storesNearBy');
+    	  
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  
+          //if (status === google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i &lt; 4; i++) {
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(i));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+            }
+            
+            tb1.appendChild(tbdy);
+            body.appendChild(tb1);
+            //window.alert("check4");
+            
+         //}
+          
+      }
+      
+      document.onload(initMap());
+      
+    </script>
+</body>
+</html>

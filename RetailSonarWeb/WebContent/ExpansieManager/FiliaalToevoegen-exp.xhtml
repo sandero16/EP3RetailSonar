@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<!-- xmlns:h="http://xmlns.jcp.org/jsf/html" -->
+
+<h:head>
+	<title>Nieuw Filiaal</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&amp;libraries=places"></script>
+	<!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&callback=initMap">
+    </script>-->
+	<link rel="shortcut icon" type="image/x-icon"
+		href="/RetailSonarWeb/images/favicon.png" />
+
+</h:head>
+
+<body>
+	<div class="header">
+		<h:form>
+			<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+				alt="heart" />
+			<!--<h:commandButton class="logout"
+				action="#{FiliaalController.logoutFunction()}" value='Log Out' />-->
+
+
+			<p:menuButton value="#{FiliaalController.findUser()}" class="logout">
+				<p:menuitem value="Log Out"
+					actionListener="#{FiliaalController.logoutFunction()}" />
+				<p:menuitem value="Instellingen"
+					action="#{FiliaalController.redirect()}" />
+				<!--<p:menuitem value="Delete" actionListener="#{menuView.delete}" ajax="false" icon="ui-icon-close"/>
+        <p:separator />
+        <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>-->
+			</p:menuButton>
+		</h:form>
+	</div>
+
+	<div class="leading">
+		<p class="leading-bigtext">Filiaal Toevoegen</p>
+		<p class="leading-text"></p>
+	</div>
+	<h:form id="form">
+		<h2>Algemene Gegevens</h2>
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td>Naam</td>
+					<td><h:inputText id="naamFiliaal" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevensNieuw.naamFiliaal}"
+							required="true"
+							requiredMessage="Voer een naam in voor het filiaal" />
+						<h:message  for="naamFiliaal" style="color: red;"/></td>
+				</tr>
+				<tr>
+					<td>Straat</td>
+					<td><h:inputText id="straat" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevensNieuw.straat}"
+							required="true" requiredMessage="Voer een straat in" />
+						<h:message for="straat" style="color: red;"/></td>
+				</tr>
+				<tr>
+					<td>Nummer</td>
+					<td><h:inputText id="nummer" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevensNieuw.nummer}"
+							required="true" requiredMessage="Voer een nummer in" />
+						<h:message for="nummer" style="color: red;"/></td>
+				</tr>
+				<tr>
+					<td>Postcode</td>
+					<td><h:inputText id="postcode" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevensNieuw.postcode}"
+							required="true" requiredMessage="Voer een postcode in" />
+						<h:message for="postcode" style="color: red;"/></td>
+				</tr>
+				<tr>
+					<td>Gemeente</td>
+					<td><h:inputText id="gemeente" type="text" class="input"
+							value="#{FiliaalController.filiaalGegevensNieuw.gemeente}"
+							required="true" requiredMessage="Voer een gemeente in" />
+						<h:message for="gemeente" style="color: red;"/></td>
+				</tr>
+				<tr>
+					<td>Voeg RegioManager Toe</td>
+					<td><h:selectOneMenu id="regiomanagers" var="f"
+							value="#{FiliaalController.filiaalGegevensNieuw.userId}"
+							style="border-radius:12px;border:1px solid black;">
+							<f:selectItem itemLabel="Selecteer" itemValue="" />
+							<f:selectItems
+								value="#{UserController.findAllRegioManagersBedrijf()}" var="f"
+								itemLabel="#{f.username}" itemValue="#{f.userId}" />
+
+						</h:selectOneMenu></td>
+				</tr>
+			</table>
+		</div>
+		
+		<h:commandButton id="maakfiliaal" class="opslaan"
+			action="#{FiliaalController.maakFiliaal}" value="Opslaan"></h:commandButton>
+	</h:form>
+</body>
+</html>

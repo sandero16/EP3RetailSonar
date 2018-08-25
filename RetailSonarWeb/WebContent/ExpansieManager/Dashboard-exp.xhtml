@@ -1,0 +1,505 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:o="http://omnifaces.org/ui">
+<h:head>
+	<title>Retail Sonar</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+	<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&amp;callback=initMap"></script>
+
+
+	<!-- <script src="/script.js" defer></script>-->
+	<link rel="shortcut icon" type="image/x-icon"
+		href="/RetailSonarWeb/images/favicon.png" />
+	<style>
+.map {
+	width: auto;
+	height: 500px;
+	background: white;
+	margin: 20px 100px 20px 100px;
+	border: 2px solid black;
+	border-radius: 12px;
+}
+
+
+</style>
+</h:head>
+<f:metadata>
+	<!-- <f:viewParam name="bedrijfid" value="#{FiliaalController.bedrijfid}"></f:viewParam>
+		<f:viewAction action="#{UserController.setUser(request.remoteUser)}"/>-->
+</f:metadata>
+<body>
+	<h:outputStylesheet name="/RetailSonarWeb/assets/css/styles.css" />
+	<div class="header">
+		<h:form>
+			<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+				alt="heart" />
+			<!--<h:commandButton class="logout"
+				action="#{FiliaalController.logoutFunction()}" value='Log Out' />-->
+
+
+			<p:menuButton value="#{FiliaalController.findUser()}" class="logout">
+				<p:menuitem value="Log Out"
+					actionListener="#{FiliaalController.logoutFunction()}" />
+				<p:menuitem value="Instellingen"
+					action="#{FiliaalController.redirect()}" />
+				<p:menuitem value="Gebruikerinfo"
+					action="#{FiliaalController.redirectGegevens()}" />		
+				<!--<p:menuitem value="Delete" actionListener="#{menuView.delete}" ajax="false" icon="ui-icon-close"/>
+        <p:separator />
+        <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>-->
+			</p:menuButton>
+		</h:form>
+	</div>
+
+	<div class="leading">
+		<p class="leading-bigtext">Welcome</p>
+		<p class="leading-text"></p>
+	</div>
+	<!--<h:form>
+		<h:commandButton class="newuser" value="Nieuw Filiaal"
+			action="FiliaalToevoegen-exp.faces?faces-redirect=true" />
+	</h:form>-->
+
+	<div style="padding: 30px" />
+	<h2>Filialen</h2>
+	<div style="padding: 10px" />
+	<h:form id="filiaal" class="tablestyle">
+		<!-- style="display:none;">-->
+		<p:panelGrid columns="2" layout="grid" style="border:none;">
+
+			<h:dataTable style="width:100%;"
+				value="#{FiliaalController.findAllFilialenBedrijf()}" var="filiaal">
+				<h:column>
+					<h:outputText value="#{filiaal.naamFiliaal}" class="article-title" />
+				</h:column>
+				<h:column>
+
+					<!-- wordt nog een ander pagina waar gegevens kunnen worden gewijzigd -->
+					<!--  <a href="FiliaalToevoegen.faces?filiaalId=#{filiaal.filiaalid}">-->
+					<a href="stores-exp.faces?filiaalId=#{filiaal.filiaalid}"> <img
+						class="article-img" src="/RetailSonarWeb/images/store-icon-1.png"
+						alt="Open Project" />
+					</a>
+				</h:column>
+				<h:column>
+					<p:commandLink update=":filiaalDia:filiaalDetail"
+						oncomplete="PF('filiaalDialog').show()" title="View Detail">
+						<h:outputText styleClass="ui-icon ui-icon-search"
+							style="margin:0 auto;" />
+						<f:setPropertyActionListener value="#{filiaal}"
+							target="#{FiliaalController.huidigFiliaal}" />
+					</p:commandLink>
+				</h:column>
+				<h:column>
+					<p:commandLink update=":taskDia:taskDetail"
+						oncomplete="PF('taskDialog').show()" title="View Tasks">
+						<img class="article-img"
+							src="/RetailSonarWeb/images/task-transparent.png" />
+						<f:setPropertyActionListener value="#{filiaal}"
+							target="#{FiliaalController.huidigFiliaal}" />
+					</p:commandLink>
+				</h:column>
+				<h:column>
+					<p:commandButton class="verwijder"
+						action="#{FiliaalController.verwijderFiliaal(filiaal.filiaalid)}"
+						value="verwijder">	
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Ja" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</h:column>
+
+			</h:dataTable>
+
+			<h:commandButton class="newuserlite" value="Nieuw Filiaal"
+				action="FiliaalToevoegen-exp.faces?faces-redirect=true" />
+
+
+		</p:panelGrid>
+	</h:form>
+	<div style="padding: 30px"></div>
+	<h2>Gebruikers</h2>
+	<div style="padding: 10px;" />
+	<h:form id="gebruiker" class="tablestyle">
+		<p:panelGrid columns="2" layout="grid">
+			<h:outputText value="Nog geen gebruikers"
+				rendered="#{empty UserController.findAllUsersBedrijf()}" />
+			<h:dataTable style="width:100%"
+				value="#{UserController.findAllUsersBedrijf()}" var="user"
+				rendered="#{not empty UserController.findAllUsersBedrijf()}">
+				<h:column>
+					<img class="image" src="/RetailSonarWeb/img_avatar2.png" />
+				</h:column>
+				<h:column>
+
+					<h:outputLabel value="#{user.username}" />
+				</h:column>
+				<h:column>
+
+					<h:outputLabel value="#{user.getGroupName()}" />
+				</h:column>
+				<h:column>
+					<p:commandButton class="verwijder"
+						action="#{UserController.verwijderGebruiker(user.getUserId())}"
+						value="verwijder">
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Ja" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</h:column>
+			</h:dataTable>
+			<h:commandButton class="newuserlite" value="Nieuwe Gebruiker"
+				action="GebruikerToevoegen-exp.faces?faces-redirect=true" />
+		</p:panelGrid>
+
+		<input type="hidden" id="hidden2"
+			value="#{FiliaalController.getLocationInfoAllFilialen()}" />
+
+	</h:form>
+
+	<div style="padding: 30px"></div>
+	<h2>Afbeeldingen</h2>
+	<div style="padding: 10px;" />
+	<div class="tablestyle">
+
+
+
+		<h:outputText value="Geen filialen"
+			rendered="#{empty FiliaalController.findAllFilialenBedrijf()}" />
+		<h:dataTable value="#{FiliaalController.findAllFilialenBedrijf()}"
+			var="filiaal"
+			rendered="#{not empty FiliaalController.findAllFilialenBedrijf()}">
+			<h:column>
+				<h:outputText value="#{filiaal.getNaamFiliaal()}" />
+				<div style="padding: 10px" />
+
+				<h:outputText value="Geen afbeeldingen"
+					rendered="#{empty AfbeeldingController.findAllAfbeeldingenFiliaal2(filiaal.getFiliaalid())}" />
+				
+					<div class="panel_users">
+						<ui:repeat var="afb" value="#{AfbeeldingController.findAllAfbeeldingenFiliaal2(filiaal.getFiliaalid())}"
+						rendered="#{not empty AfbeeldingController.findAllAfbeeldingenFiliaal2(filiaal.getFiliaalid())}">
+							<h:panelGrid columns="1" style="float: left;">
+								<o:graphicImage style="width:100px;height:auto;"
+									value="#{afb.waarde}" dataURI="true" />
+
+							</h:panelGrid>
+						</ui:repeat>
+					</div>
+					<!--<h:dataTable
+					value="#{AfbeeldingController.findAllAfbeeldingenFiliaal2(filiaal.getFiliaalid())}"
+					var="afb"
+					rendered="#{not empty AfbeeldingController.findAllAfbeeldingenFiliaal2(filiaal.getFiliaalid())}">
+					
+						<h:column>
+
+							<o:graphicImage style="width:100px;height:auto;"
+								value="#{afb.waarde}" dataURI="true" />
+						</h:column>
+				
+				</h:dataTable>-->
+
+				
+
+
+			</h:column>
+		</h:dataTable>
+
+	</div>
+	<div style="padding: 30px;" />
+	<h:form id="filiaalDia">
+		<!-- <div class="tablestyle" style="padding: 20px">
+			<table style="width: 100%">
+				<tr>
+					<td>Download alle filiaal data</td>
+					<td><h:commandLink>
+							<img src="/RetailSonarWeb/images/pdf-small.png" width="30"
+								height="auto" />
+							<p:dataExporter type="pdf" target="tbl" fileName="filiaalInfo"/>
+						</h:commandLink></td>
+				</tr>
+			</table>
+		</div>-->
+
+		<p:dialog header="Filiaal Info" widgetVar="filiaalDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="filiaalDetail" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty FiliaalController.huidigFiliaal}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<p:graphicImage name="/RetailSonarWeb/images/store-icon-1.gif" />
+						<!-- voor custom images: demo/images/car/#{dataGridView.selectedCar.brand}-big.gif -->
+					</f:facet>
+
+					<h:outputText value="Naam:" />
+					<h:outputText
+						value="#{FiliaalController.huidigFiliaal.getNaamFiliaal()}" />
+
+					<h:outputText value="Straat" />
+					<h:outputText
+						value="#{FiliaalController.huidigFiliaal.getStraat()}" />
+
+					<h:outputText value="Nummer:" />
+					<h:outputText
+						value="#{FiliaalController.huidigFiliaal.getNummer()}" />
+
+					<h:outputText value="Postcode" />
+					<h:outputText
+						value="#{FiliaalController.huidigFiliaal.getPostcode()}" />
+
+					<h:outputText value="Gemeente" />
+					<h:outputText
+						value="#{FiliaalController.huidigFiliaal.getGemeente()}" />
+
+					<!-- <h:outputText value="Regio Manager" />
+					<h:outputText
+						value="#{FiliaalController.findRegioManager()}" />-->
+
+				</p:panelGrid>
+
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+	<h:form id="taskDia">
+		<p:dialog header="Taak info" widgetVar="taskDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="taskDetail" style="text-align:center;">
+				<img class="dialogimage" style="padding: 30px;"
+					src="/RetailSonarWeb/images/task-transparent.png" />
+				<p:dataTable id="taskTable" var="task"
+					value="#{FiliaalController.findAllTasksFiliaal()}">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Selecteer voor verwijdering" />
+						</f:facet>
+						<h:selectBooleanCheckbox style="vertical-align:middle;"
+							value="#{FiliaalController.checked[task.taakId]}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Taak Beschrijving" />
+						</f:facet>
+						<h:outputText value="#{task.beschrijving}" />
+					</p:column>
+				</p:dataTable>
+				<div style="padding: 30px;" />
+				<p:inputTextarea a:placeholder="Beschrijving taak" rows="6"
+					cols="33" value="#{FiliaalController.taak.beschrijving}" />
+				<br />
+				<div style="padding: 30px;" />
+				<h:commandButton id="voegTaakToe" class="newuserlite"
+					value="Voeg taak toe" action="#{FiliaalController.voegTakenToe}">
+					<!-- <f:ajax event="click" execute="@form" render=":taskDetail" />-->
+				</h:commandButton>
+				<h:commandButton id="verwijderTaak" class="newuserlite"
+					value="Verwijder geselecteerde taken"
+					action="#{FiliaalController.verwijderTaken}">
+					<!-- <f:ajax event="click" execute="@form" render=":taskDetail" />-->
+				</h:commandButton>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+
+	<div id="map" class="map"></div>
+
+	<script type="text/javascript">
+	
+	 var resultLat = "lat: ";
+	    var resultLng = "lng: ";
+	    var resultTot = "";
+	    var resp = {lat: 51.0543422, lng: 3.717424299999948};
+	    var map;
+	    var pos;
+	    var geocoder = new google.maps.Geocoder();
+	      function initMap() {
+	    	  
+	    	var mapOptions = {
+	    			zoom: 8,
+	    	          center: {lat: 50.83, lng: 4.35},
+	    	          mapTypeId: google.maps.MapTypeId.roadmap,
+	    	  	    clickableIcons:false,
+	    	  	    disableDoubleClickZoom:true,
+	    	  	    //draggable:false,
+	    	  	    fullscreenControl:false,
+	    	  	    keyboardShortcuts:false,
+	    	  	    mapTypeControl:false,
+	    	  	    panControl:false,
+	    	  	    rotateControl:false,
+	    	  	    scaleControl:false,
+	    	  	    //scrollwheel:false,
+	    	  	    streetViewControl:false,
+	    	  	    //zoomControl:false,		
+	    	};
+	        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	        //alert('map set, array being fetched');
+	        //document.getElementById("cbutton").click();
+	        var array = document.getElementById('hidden2').value;
+	        var arraySplitted = array.split(",");
+	        //alert(arraySplitted);
+	        marker(arraySplitted);
+	         
+	      }
+		  function marker(array){
+			  var adres = "";
+			  //alert(array.length);
+			  for(var i = 0; i &lt; array.length; i++){
+				  adres = array[i].concat(" ",array[i+1]," ",array[i+2]);
+				  //alert(adres);
+				  geocodeAddress(geocoder, map, adres);
+				  //alert('geocoder ' + i + ' succesfully executed');
+				  i++;
+				  i++;
+			  }
+			  
+		  }
+	      function geocodeAddress(geocoder, resultsMap, adres) {
+	    	  //alert("geocoder started");
+	    	  map = resultsMap;
+	          //alert('adres: ' + adres);
+	        geocoder.geocode({'address': adres}, function(results, status) {
+	          if (status === 'OK') {
+	        	  //alert('Status OK');
+	            //resultsMap.setCenter(results[0].geometry.location);
+	            //pos = results[0].geometry.location;
+	            //alert('Position Set');
+	            var marker = new google.maps.Marker({
+	              map: resultsMap,
+	              position: results[0].geometry.location,
+	              icon: '/RetailSonarWeb/images/custommarker-small.png',
+	            });
+	            //resultsMap.setZoom(15);
+	            google.maps.event.addListener(marker, 'click', function() {
+	  	          infowindow.setContent(adres);
+	  	          infowindow.open(resultsMap, this);
+	  	        });
+	          } 
+	        });
+	      }     
+	      /*function nearBySearch(){
+	    	  var mapOptions = {
+	      			zoom: 15,
+	      	          center: pos,
+	      	          mapTypeId: google.maps.MapTypeId.roadmap,
+	      	  	    clickableIcons:false,
+	      	  	    disableDoubleClickZoom:true,
+	      	  	    draggable:false,
+	      	  	    fullscreenControl:false,
+	      	  	    keyboardShortcuts:false,
+	      	  	    mapTypeControl:false,
+	      	  	    panControl:false,
+	      	  	    rotateControl:false,
+	      	  	    scaleControl:false,
+	      	  	    scrollwheel:false,
+	      	  	    streetViewControl:false,
+	      	  	    zoomControl:false,		
+	      	};
+	    	  map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	    	  var service = new google.maps.places.PlacesService(map);
+	    	  infowindow = new google.maps.InfoWindow();
+	    	  alert('service about to be called, position: ' + pos);
+			  service.nearbySearch({
+		          location: pos,
+		          radius: 500,
+		          type: ['supermarket', 'store']
+		        }, call);
+		  }
+	      function callback(results, status) {
+	        if (status === google.maps.places.PlacesServiceStatus.OK) {
+	          for (var i = 0; i &lt; results.length; i++) {
+	            createMarker(results[i]);
+	          }
+	          var marker = new google.maps.Marker({
+	              map: map,
+	              position: pos,
+	              
+	            });
+	        }
+	      }
+
+	      function createMarker(place) {
+	        var placeLoc = place.geometry.location;
+	        var marker = new google.maps.Marker({
+	          map: map,
+	          position: place.geometry.location,
+	          icon: '/RetailSonarWeb/images/marker.png',
+	        });
+
+	        google.maps.event.addListener(marker, 'click', function() {
+	          infowindow.setContent(place.name);
+	          infowindow.open(map, this);
+	        });
+	      }
+	      function call(results, status) {
+	    	  alert('call started');
+	    	  var body = document.getElementById('storesNearBy');
+	    	  var tb1 = document.createElement('table');
+	    	  var tbdy = document.createElement('tbody');
+	    	  
+	          if (status === google.maps.places.PlacesServiceStatus.OK) {
+	        	  
+	            for (var i = 0; i &lt; results.length; i++) {
+	              createMarker(results[i]);
+	              var tr = document.createElement('tr');
+	              var td = document.createElement('td');
+	              td.appendChild(document.createTextNode(results[i].name));
+	              tr.appendChild(td);
+	              tbdy.appendChild(tr);
+	              
+	            }
+	            tb1.appendChild(tbdy);
+	            body.appendChild(tb1);
+	         }
+	          
+	    }
+	      function test(){
+	    	  var body = document.getElementById('storesNearBy');
+	    	  
+	    	  var tb1 = document.createElement('table');
+	    	  var tbdy = document.createElement('tbody');
+	    	  
+	          //if (status === google.maps.places.PlacesServiceStatus.OK) {
+	            for (var i = 0; i &lt; 4; i++) {
+	              var tr = document.createElement('tr');
+	              var td = document.createElement('td');
+	              td.appendChild(document.createTextNode(i));
+	              tr.appendChild(td);
+	              tbdy.appendChild(tr);
+	            }
+	            
+	            tb1.appendChild(tbdy);
+	            body.appendChild(tb1);
+	            //window.alert("check4");
+	            
+	         //}
+	          
+	      }*/
+	      
+	      document.onload(initMap());
+	
+     
+    
+    </script>
+</body>
+</html>

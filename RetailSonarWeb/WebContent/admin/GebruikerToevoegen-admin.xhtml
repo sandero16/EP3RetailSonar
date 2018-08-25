@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+<head>
+<title>Toevoegen Gebruiker</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+<link href="https://fonts.googleapis.com/css?family=Quicksand"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+</head>
+<f:metadata>
+	<f:viewParam name="bedrijf" value="#{UserController.bedrijfId}" />
+</f:metadata>
+
+
+<body>
+	<div class="header">
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+		
+	</div>
+	<div class="leading">
+		<p class="leading-bigtext">Gebuiker Toevoegen</p>
+		<p class="leading-text"></p>
+	</div>
+
+	<h2>Gegevens Gebruiker</h2>
+	<h:form>
+		<f:event listener="#{UserController.validatePasswordNewUser}" type="postValidate" />
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<!-- de reden dat gebruikerController met hoofdletter is, is omdat het een managed bean is met een andere naam -->
+					<td>Gebruiker Username</td>
+					<!-- bij value komt iets zoals: #{GebruikerController.getGebruiker.getUsername()} -->
+					<td><h:inputText id="username" class="input"
+							value="#{UserController.user.username}" required="true" requiredMessage="Please enter Username"/>
+							<h:message for="username" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Gebruiker password</td>
+					<td><h:inputSecret id="userPassword" class="input"
+							value="#{UserController.user.password}" required="true" requiredMessage="Please enter Password"/>
+							<h:message for="userPassword" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Vul password opnieuw in</td>
+					<td><h:inputSecret id="userPasswordValidation" class="input" required="true" requiredMessage="Please enter confirm password"/>
+					<h:message for="userPasswordValidation" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Rol in het bedrijf</td>
+					<td><b:form horizontal="true">
+  						<b:formGroup>
+  							<b:selectOneMenu value="#{UserController.userGroup}" required="true" style="border-radius:12px;border:1px solid red;">
+  								<f:selectItem itemLabel="" itemValue=""/>
+  								<f:selectItem itemLabel="ExpansieManager" itemValue="3"/>
+  								<f:selectItem itemLabel="RegioManager" itemValue="1"/>
+  							</b:selectOneMenu>
+  						</b:formGroup>
+  					</b:form></td>
+				</tr>
+			</table>
+		</div>
+
+		<h:commandButton id="submit" class="opslaan"
+			action="#{UserController.maakGebruiker()}" value="Opslaan" />
+
+	</h:form>
+</body>
+</html>

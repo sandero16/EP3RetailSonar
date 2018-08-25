@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://xmlns.jcp.org/jsf/html" 
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+    <title>Retail Sonar</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet"/>
+    <link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css"/>
+	<link rel="shortcut icon" type="image/x-icon" href="/RetailSonarWeb/images/favicon.png" />
+    <!-- <script src="/script.js" defer></script>-->
+   
+  </h:head>
+  <f:metadata>
+  		<!-- <f:viewParam name="bedrijfid" value="#{FiliaalController.bedrijfid}"></f:viewParam>
+		<f:viewAction action="#{UserController.setUser(request.remoteUser)}"/>-->
+	</f:metadata>
+  <body>
+	<div class="header">
+	<h:form>
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+		<h:commandButton class="logout" action="#{FiliaalController.logoutFunction()}" value='Log Out'/>
+		</h:form>
+	</div>
+
+	<div class="leading">
+		<p class="leading-bigtext">Welcome</p>
+		<p class="leading-text"></p>
+	</div>
+	
+	<h:form>
+      		<h:commandButton class = "newuser" value = "Nieuw Filiaal" action="FiliaalToevoegen.faces?faces-redirect=true"/>
+	</h:form>
+		<h:form class="tablestyle2" ><!-- style="display:none;">-->
+			<h:dataTable style="width:100%;" value="#{FiliaalController.findAllFilialenBedrijf()}" var="filiaal" >
+			
+				
+			<h:column>
+				
+				<h:outputText value="#{filiaal.naamFiliaal}" class="article-title" />	
+					
+			</h:column>
+			<h:column>
+						
+			<!-- wordt nog een ander pagina waar gegevens kunnen worden gewijzigd -->
+			<!--  <a href="FiliaalToevoegen.faces?filiaalId=#{filiaal.filiaalid}">-->
+			<a  href="FiliaalAanpassen.faces?filiaalId=#{filiaal.filiaalid}">
+				<img class="article-img" src="/RetailSonarWeb/images/store-icon-1.png" alt="Open Project" />
+			</a>
+
+			</h:column>
+			
+			
+			</h:dataTable>
+		</h:form>
+	
+</body>
+</html>

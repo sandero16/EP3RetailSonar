@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Gebruikers Toevoegen</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+</h:head>
+
+<f:metadata>
+
+	<f:viewParam name="bedrijf" value="#{UserController.bedrijfId}" />
+	<!-- <f:viewAction action="#{bedrijfController.findBedrijf}"/>-->
+</f:metadata>
+<body>
+	<div class="header">
+		<h:form>
+			<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+				alt="heart" />
+			<!--<h:commandButton class="logout"
+				action="#{FiliaalController.logoutFunction()}" value='Log Out' />-->
+
+
+			<p:menuButton value="#{FiliaalController.findUser()}" class="logout">
+				<p:menuitem value="Log Out"
+					actionListener="#{FiliaalController.logoutFunction()}" />
+				<p:menuitem value="Instellingen"
+					action="#{FiliaalController.redirect()}" />
+				<!--<p:menuitem value="Delete" actionListener="#{menuView.delete}" ajax="false" icon="ui-icon-close"/>
+        <p:separator />
+        <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>-->
+			</p:menuButton>
+		</h:form>
+	</div>
+	<div class="leading">
+		<p class="leading-bigtext">Gebruikers</p>
+		<p class="leading-text"></p>
+	</div>
+	<h:form>
+		<!-- action siet er iets als volgt uit: GebruikerToevoegen.faces?bedrijf=#{bedrijf.id} -->
+		<a class="newuser" style="text-decoration: none;"
+			href="GebruikerToevoegen-admin.faces?bedrijf=#{UserController.bedrijfId}">Nieuwe
+			Gebruiker</a>
+		<a class="newuser" style="text-decoration: none;top:200px;"
+			href="Dashboard-admin.faces?faces-redirect=true">Terug</a>
+
+	</h:form>
+	<h:form class="tablestyle">
+		<h:outputText value="Nog geen gebruikers" rendered="#{empty UserController.findAllUsersBedrijf()}"/>
+		<h:dataTable id="tableGebruikers" style="width:100%;"
+			value="#{UserController.findAllUsersBedrijf()}" var="gebruiker"
+			rendered="#{not empty UserController.findAllUsersBedrijf()}">
+			<h:column>
+					<img class="image" src="/RetailSonarWeb/img_avatar2.png" />
+				</h:column>
+			<h:column>
+				<f:facet name="header" class="datatable">
+					<h:outputText value="Gebruiker Naam" />
+				</f:facet>
+				<h:outputText value="#{gebruiker.username}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Gebruiker ID" />
+				</f:facet>
+				<h:outputText value="#{gebruiker.userId}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Gebruiker Rol" />
+				</f:facet>
+				<h:outputText value="#{gebruiker.getGroupName()}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Verwijderen" />
+				</f:facet>
+					<p:commandButton
+						class="verwijder"
+						action="#{UserController.verwijderGebruiker(gebruiker.getUserId())}"
+						value="verwijder">
+					
+					</p:commandButton>
+					
+					 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        				<p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        				<p:commandButton value="Cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+   					 </p:confirmDialog>
+
+				<!-- <p:commandLink
+					action="#{UserController.verwijderGebruiker(gebruiker.getUserId())}">
+					<img class="image" src="/RetailSonarWeb/images/minus.png" />
+					<f:ajax render="tableGebruikers" />
+				</p:commandLink>
+-->
+			</h:column>
+
+		</h:dataTable>
+		
+	</h:form>
+
+</body>
+</html>

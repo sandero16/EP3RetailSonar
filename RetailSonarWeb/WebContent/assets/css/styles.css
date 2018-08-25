@@ -1,0 +1,290 @@
+/* Flex styles -------------------------------------------------*/
+header {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 700px) {
+ .leading {
+    display: flex;
+    align-items: center;
+  }
+}
+
+
+/* Grid styles -------------------------------------------------*/
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 30px;
+}
+
+
+/* Generic styles ----------------------------------------------*/
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.header {
+	position:relative;
+  padding: 10px;
+  font-size: 2em;
+  color: white;
+  background-color: #333;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 20px;
+}
+
+.leading {
+  height: 240px;
+  margin-bottom: 30px;
+  padding: 30px;
+  color: white;
+  background: url('https://retailsonar.com/themes/retailsonar/assets/images/hero-homepage.jpg') center #333 no-repeat;
+  background-size: cover;
+  color: white;
+  text-shadow: 0px 0px 5px #000;
+}
+
+.leading-bigtext {
+  margin-right: 60px;
+  font-weight: bold;
+  font-size: 20vw;
+}
+
+@media (min-width: 400px) {
+  .leading-bigtext {
+    font-size: 140px;
+  }
+}
+
+.leading-text {
+  max-width: 900px;
+  font-size: 1.2em;
+  line-height: 1.4em;
+}
+
+.cards {
+  	text-align: center;
+	width:auto;
+	border: 2px solid black;
+	border-radius:12px;	
+	margin-right:400px;
+	margin-left:400px;
+	padding:30px;
+  
+}
+
+.tablestyle2 {
+  	text-align: center;
+	width:auto;
+	border: 2px solid black;
+	border-radius:12px;	
+	margin-right:5%;
+	margin-left:5%;
+	padding:30px;
+  
+}
+.row{
+	padding: 30px;
+	border: 2px solid black;
+	border-radius: 12px;
+	width: 100%;
+}
+.article {
+  position: relative;
+  border-radius:12px;
+}
+
+.article-img {
+  height: 40px;
+  width: 40px;
+  transition-duration: 0.4s;
+  border-radius:12px;
+  vertical-align:middle;
+}
+
+.article-img:hover{
+	transition-duration: 0.4s;
+	opacity: 0.8;
+	cursor: pointer;
+	
+}
+
+.article-title {
+  
+  width: auto;
+  padding: 30px;
+  border-radius:12px;
+  color:black;
+  vertical-align:middle;
+}
+
+
+.head{
+	position: absolute;
+	top:0;
+	left:0;
+	
+	width:100%;
+	height:200px; 
+}
+.head-content{
+	height:auto%;
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.bg{
+	background-image:url("images/hero-homepage.jpg");
+	height:100%;
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity:1;
+}
+
+.logout{
+	position: relative;
+	font-size: 15px;
+	color: white;
+	height: 40px;
+	float:right;
+	background-color: #333;
+	border:none;
+	cursor: pointer;
+	
+}
+
+.tablestyle{
+	text-align: center;
+	width:auto;
+	border: 2px solid black;
+	border-radius:12px;	
+	margin-right:100px;
+	margin-left:100px;
+	padding:30px;
+}
+.opslaan{
+	height:auto;
+	width:auto;
+	margin-top:20px;
+	margin-bottom:30px;
+	padding: 10px;
+	background-color:#333333;
+	border-radius:12px;
+	font-size:20px;
+	text-align:center;
+	color:white;
+	border: 2px solid white;
+	transition-duration: 0.4s;
+	
+}
+.opslaan:hover{
+	transition-duration: 0.4s;
+	cursor:pointer;
+	opacity:0.9;
+}
+td,.datatable{
+	text-align:center;
+	padding: 10px;
+	height:auto;
+}
+.datatable{
+	text-align:center;
+	padding: 10px;
+	margin-top:auto;
+	maring-bottom:auto;
+}
+h1{
+	padding: 30px;
+	font-weight: bold;
+    font-size: 30px;
+}
+h2{
+	font-size:20px;
+	padding: 20px;
+}
+.input{
+	width:100%;
+	border-radius:5px;
+	border: 1px solid black;
+}
+.footer{
+	position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+}
+.image{
+		height:30px;
+		width: 30px;
+		border-radius:50%;
+		vertical-align:middle;
+}
+
+.newuser{
+    	position:absolute;
+    	top:300px;
+    	right: 50px;
+    	background-color:#333333;
+    	width:auto;
+    	height:auto;
+    	border-radius:12px;
+    	transition-duration: 0.4s;
+    	text-align:center;
+    	font-size:30px;
+    	color:white;
+    	font-weight:bold;
+    	padding: 10px;
+    	border: 2px solid white;
+ }
+.newuser:hover,.newuserlite:hover{
+    	transition-duration: 0.4s;
+   		cursor:pointer;
+   		opacity:0.9;
+}
+.newuserlite{
+		background-color:#333333;
+    	width:auto;
+    	height:auto;
+    	border-radius:12px;
+    	transition-duration: 0.4s;
+    	text-align:center;
+    	font-size:30px;
+    	color:white;
+    	font-weight:bold;
+    	padding: 10px;
+    	border: 2px solid white;
+    	margin-right: 10px;
+    	margin-left: 10px;
+}
+.dialogimage{
+	height: 60px;
+	witdh:auto;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+	border-radius:12px;
+	border:1px solid black;
+	background-color:white;
+	color:black;
+	cursor:pointer;
+	height:auto;
+	width:auto;
+	background:white;
+	font-family:Quicksand;
+	font-weight:bold;
+}
+.panel_users {
+	width: 300px;
+	height: auto;
+	background-color: white;
+	margin: 10px;
+	overflow: auto;
+	float: left;
+}

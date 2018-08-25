@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:o="http://omnifaces.org/ui">
+<head>
+<title>Instellingen</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+<link href="https://fonts.googleapis.com/css?family=Quicksand"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+</head>
+<f:metadata>
+	<!-- <f:viewParam name="bedrijfid" value="#{FiliaalController.bedrijfid}"></f:viewParam>
+		<f:viewAction action="#{UserController.setUser(request.remoteUser)}"/>-->
+</f:metadata>
+<body>
+	<div class="header">
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+	</div>
+
+	<div class="leading">
+		<p class="leading-bigtext">Instellingen</p>
+		<p class="leading-text"></p>
+	</div>
+
+	<h2>Wachtwoord wijzigen</h2>
+	<h:form>
+		<!--  <f:event listener="#{UserController.checkPasswordUser}"
+			type="postValidate" />-->
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td><h:outputLabel value="Gebruikersnaam" /></td>
+					<td><h:outputText style="width:auto"
+							value="#{UserController.loggedInUser.username}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Nieuw Wachtwoord" /></td>
+					<td><h:inputSecret id="userPassword" class="input"
+							value="#{UserController.newPassword}" required="true"
+							requiredMessage="Wachtwoord ingeven" /> <h:message
+							for="userPassword" style="color:red" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Controle nieuw Wachtwoord" /></td>
+					<td><h:inputSecret id="userPasswordValidation" class="input"
+							required="true" requiredMessage="Wachtwoord ingeven" /> <h:message
+							for="userPasswordValidation" style="color:red" /></td>
+				</tr>
+			</table>
+		</div>
+		 <o:validateEqual id="validateConfirm" components="userPassword userPasswordValidation" message="Passwords are not equal" />
+		<h:commandButton id="submit" class="opslaan"
+			action="#{UserController.changePasswordUser()}" value="Opslaan" />
+
+	</h:form>
+</body>
+</html>

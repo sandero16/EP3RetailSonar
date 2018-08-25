@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:o="http://omnifaces.org/ui">
+<!-- xmlns:h="http://xmlns.jcp.org/jsf/html" -->
+
+<h:head>
+	<title>Filiaal Test</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+	<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&amp;libraries=places"></script>
+	<!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&callback=initMap">
+    </script>-->
+	<link rel="shortcut icon" type="image/x-icon"
+		href="/RetailSonarWeb/images/favicon.png" />
+	<style type="text/css">
+.map {
+	width: auto;
+	height: 500px;
+	background: white;
+	margin: 20px 100px 20px 100px;
+	border: 2px solid black;
+	border-radius: 12px;
+}
+
+.map2 {
+	width: auto;
+	height: auto;
+	background: white;
+	margin: 20px 100px 20px 100px;
+	border: 2px solid black;
+	border-radius: 12px;
+	text-align: center;
+}
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	top: 150%;
+	left: 50%;
+	margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+	content: " ";
+	position: absolute;
+	bottom: 100%; /* At the top of the tooltip */
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+</style>
+</h:head>
+
+<f:metadata>
+	<f:viewParam name="filiaalId" value="#{FiliaalController.filiaalId}" />
+	<f:viewParam name="filiaalId" value="#{AfbeeldingController.filiaalId}" />
+	<f:viewParam name="filiaalId"
+		value="#{EigenschappenController.filiaalId}" />
+	<!--<f:viewAction action="#{FiliaalController.findFiliaalGegevens}" />-->
+	<f:viewAction action="#{FiliaalController.findBedrijfNaam}" />
+</f:metadata>
+<body>
+	<div class="header">
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+		<!--<button class="logout" onclick="logoutFunction()">Log Out</button>-->
+	</div>
+	<div class="leading">
+		<p class="leading-bigtext">Filiaal Toevoegen</p>
+		<p class="leading-text"></p>
+	</div>
+	<div style="height: 30px;"></div>
+	<div style="height: 50px;">
+		<h2>Eigenschappen</h2>
+		<div style="padding: 10px;" />
+	</div>
+
+	<input type="hidden" id="naamfiliaalhidden"
+		value="#{FiliaalController.bedrijfNaam}" />
+	<input type="hidden" id="gemeentehidden"
+		value="#{FiliaalController.filiaalGegevens.gemeente}" />
+	<h:form id="form" prependId="false" enctype="multipart/form-data">
+
+		<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+			var="cat" style="width: 100%;">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="#{cat.getNaam()}" />
+				</f:facet>
+			</h:column>
+			<h:column>
+				<div class="tablestyle">
+					<h:outputText value="Geen eigenschappen"
+						rendered="#{empty EigenschappenController.findAllEigenschappenFiliaal(cat.getCategorieId())}" />
+					<h:dataTable style="width:100%;"
+						value="#{EigenschappenController.findAllEigenschappenFiliaal(cat.getCategorieId())}"
+						var="eig"
+						rendered="#{not empty EigenschappenController.findAllEigenschappenFiliaal(cat.getCategorieId())}">
+
+
+						<h:column>
+							<h:outputLabel value="#{eig.getNaam()}" />
+						</h:column>
+						<h:column>
+							<h:outputText value="Selecteer uit het dropdown menu"
+								rendered="#{not empty EigenschappenController.createMenuList(eig.getMenustring())}" />
+							<h:inputText class="input" value="#{eig.inhoud}" 
+								rendered="#{empty EigenschappenController.createMenuList(eig.getMenustring())}"
+								required="true" requiredMessage="Vul dit veld in" />
+							<h:message />
+						</h:column>
+						<h:column>
+							<h:outputText value=""
+								rendered="#{not empty EigenschappenController.createMenuList(eig.getMenustring())}" />
+							<h:outputLabel value="#{eig.getEenheid()}" 
+								rendered="#{empty EigenschappenController.createMenuList(eig.getMenustring())}" />
+							<h:message />
+						</h:column>
+						<h:column>
+							<h:outputText value="Geen Menu"
+								rendered="#{empty EigenschappenController.createMenuList(eig.getMenustring())}" />
+							<h:selectOneMenu value="#{eig.inhoud}" 
+								rendered="#{not empty EigenschappenController.createMenuList(eig.getMenustring())}"
+								style="border-radius:12px;border:1px solid black;"
+								required="true" requiredMessage="Vul dit veld in">
+								<f:selectItem itemLabel="Selecteer" itemValue="" />
+								<f:selectItems 
+									value="#{EigenschappenController.createMenuList(eig.getMenustring())}"
+									var="menu" itemLabel="#{menu}" itemValue="#{menu}" />
+								<h:message />
+							</h:selectOneMenu>
+						</h:column>
+
+
+
+					</h:dataTable>
+				</div>
+			</h:column>
+		</h:dataTable>
+		<div style="padding: 30px" />
+		<h2>Custom Eigenschappen</h2>
+		<div style="padding: 10px" />
+		<h:dataTable value="#{EigenschappenController.findAllCategorie()}"
+			var="cat" style="width: 100%;">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="#{cat.getNaam()}" />
+				</f:facet>
+			</h:column>
+			<h:column>
+				<div class="tablestyle">
+					<h:outputText value="Geen eigenschappen"
+						rendered="#{empty EigenschappenController.findAllCustomEigenschappenFiliaal(cat.getCategorieId())}" />
+					<h:dataTable style="width:100%;"
+						value="#{EigenschappenController.findAllCustomEigenschappenFiliaal(cat.getCategorieId())}"
+						var="eig"
+						rendered="#{not empty EigenschappenController.findAllCustomEigenschappenFiliaal(cat.getCategorieId())}">
+
+
+						<h:column>
+							<h:outputLabel value="#{eig.getNaam()}" />
+						</h:column>
+						<h:column>
+							<h:outputText value="Selecteer uit het dropdown menu"
+								rendered="#{not empty EigenschappenController.createMenuList(eig.getMenuString())}" />
+							<h:inputText class="input" value="#{eig.inhoud}" 
+								rendered="#{empty EigenschappenController.createMenuList(eig.getMenuString())}"
+								required="true" requiredMessage="Vul dit veld in" />
+							<h:message />
+						</h:column>
+						<h:column>
+							<h:outputText value=""
+								rendered="#{not empty EigenschappenController.createMenuList(eig.getMenuString())}" />
+							<h:outputLabel value="#{eig.getEenheid()}" 
+								rendered="#{empty EigenschappenController.createMenuList(eig.getMenuString())}"
+								required="true" requiredMessage="Vul dit veld in" />
+							<h:message />
+						</h:column>
+						<h:column>
+							<h:outputText value="Geen Menu"
+								rendered="#{empty EigenschappenController.createMenuList(eig.getMenuString())}" />
+							<h:selectOneMenu value="#{eig.inhoud}" 
+								rendered="#{not empty EigenschappenController.createMenuList(eig.getMenuString())}"
+								style="border-radius:12px;border:1px solid black;"
+								required="true" requiredMessage="Vul dit veld in">
+								<f:selectItem itemLabel="Selecteer" itemValue="" />
+								<f:selectItems
+									value="#{EigenschappenController.createMenuList(eig.getMenuString())}"
+									var="menu" itemLabel="#{menu}" itemValue="#{menu}" />
+								<h:message />
+							</h:selectOneMenu>
+						</h:column>
+					</h:dataTable>
+				</div>
+			</h:column>
+		</h:dataTable>
+		<div style="padding: 30px" />
+		<h2>Afbeeldingen toevoegen</h2>
+		<div style="padding: 10px" />
+
+		<h:inputFile value="#{AfbeeldingController.file}"></h:inputFile>
+		<div style="padding:10px"/>
+		<div class="tablestyle">
+
+			<div style="padding: 10px" />
+			<h:outputText value="Geen afbeeldingen"
+				rendered="#{empty AfbeeldingController.findAllAfbeeldingenFiliaal()}" />
+			<h:dataTable var="afb"
+					value="#{AfbeeldingController.findAllAfbeeldingenFiliaal()}"
+					rendered="#{not empty AfbeeldingController.findAllAfbeeldingenFiliaal()}" style="width:100%">
+				<h:column>
+					<h:outputText value="#{afb.pad}"/>
+				</h:column>
+				<h:column>
+					<o:graphicImage style="width:100px;height:auto;"
+							value="#{afb.waarde}" dataURI="true" />
+				</h:column>
+			</h:dataTable>
+		</div>
+		
+		<h:commandButton id="maakfiliaal" class="opslaan"
+			action="#{EigenschappenController.wijzigEigenschappen()}"
+			value="Opslaan">
+
+
+			<f:actionListener
+				binding="#{AfbeeldingController.processFileUpload()}" />
+		</h:commandButton>
+	<div style="padding:10px"/>
+	</h:form>
+	<div id="map" class="map"></div>
+	<div id="storesNearBy" class="map2" style="text-align: center;"></div>
+
+
+	<script>
+   		function test2(){
+   			window.alert("test2");
+   			var object = Packages.jsf.controller.GebruikerController.test();
+   			window.alert(object.value);
+   			
+   		}
+   </script>
+	<script type="text/javascript">
+    var resultLat = "lat: ";
+    var resultLng = "lng: ";
+    var resultTot = "";
+    var resp = {lat: 51.0543422, lng: 3.717424299999948};
+    var map;
+    var pos;
+      function initMap() {
+    	  
+    	var mapOptions = {
+    			zoom: 8,
+    	          center: {lat: 50.83, lng: 4.35},
+    	          mapTypeId: google.maps.MapTypeId.roadmap,
+    	  	    clickableIcons:false,
+    	  	    disableDoubleClickZoom:true,
+    	  	    draggable:false,
+    	  	    fullscreenControl:false,
+    	  	    keyboardShortcuts:false,
+    	  	    mapTypeControl:false,
+    	  	    panControl:false,
+    	  	    rotateControl:false,
+    	  	    scaleControl:false,
+    	  	    scrollwheel:false,
+    	  	    streetViewControl:false,
+    	  	    zoomControl:false,		
+    	};
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var geocoder = new google.maps.Geocoder();
+        
+        geocodeAddress(geocoder, map);
+        
+        
+
+        
+        /*document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, map);
+        });
+        
+        document.getElementById('nearbyS').addEventListener('click', function() {
+           nearBySearch();
+        	//test();  
+        });*/
+        
+      }
+	  
+      function geocodeAddress(geocoder, resultsMap) {
+    	
+    	  map = resultsMap;
+    	  var space =" ";
+    	  var naamfiliaal = document.getElementById('naamfiliaalhidden').value;
+    	  var gemeente = document.getElementById('gemeentehidden').value;
+          var address = naamfiliaal.concat(space).concat(gemeente);
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            pos = results[0].geometry.location;
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              
+            });
+            resultsMap.setZoom(15);
+            nearBySearch(); 
+          } 
+        });
+        
+      }     
+      function nearBySearch(){
+    	  var mapOptions = {
+      			zoom: 15,
+      	          center: pos,
+      	          mapTypeId: google.maps.MapTypeId.roadmap,
+      	  	    clickableIcons:false,
+      	  	    disableDoubleClickZoom:true,
+      	  	    draggable:false,
+      	  	    fullscreenControl:false,
+      	  	    keyboardShortcuts:false,
+      	  	    mapTypeControl:false,
+      	  	    panControl:false,
+      	  	    rotateControl:false,
+      	  	    scaleControl:false,
+      	  	    scrollwheel:false,
+      	  	    streetViewControl:false,
+      	  	    zoomControl:false,		
+      	};
+    	  map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    	  var service = new google.maps.places.PlacesService(map);
+    	  infowindow = new google.maps.InfoWindow();
+    	 
+		  service.nearbySearch({
+	          location: pos,
+	          radius: 500,
+	          type: ['supermarket', 'store']
+	        }, callback);
+	  }
+      function callback(results, status) {
+    	  var body = document.getElementById('storesNearBy');
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  var array = [];
+      	  var arrayasstring = "";
+      	var marker = new google.maps.Marker({
+            map: map,
+            position: pos,
+            icon: '/RetailSonarWeb/images/custommarker-small.png',
+          });
+       if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i &lt; results.length; i++) {
+        	  array.push(results[i].name);
+              array.push(results[i].geometry.location);
+              createMarker(results[i]); 
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(results[i].name));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+          }
+          
+          tb1.appendChild(tbdy);
+          body.appendChild(tb1);
+          for(var j = 0; j &lt; array.length;j++){
+           	  arrayasstring = arrayasstring.concat(String(array[j]));
+          	  if(j &lt; array.length){
+          		  arrayasstring = arrayasstring.concat(",");
+          	  }
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+      function call(results, status) {
+    	  alert('call started');
+    	  var array = [];
+      	  var arrayasstring = "";
+    	  var body = document.getElementById('storesNearBy');
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+        	  alert('status ok');
+            for (var i = 0; i &lt; results.length; i++) {
+            	array.push(results[i].name);
+                array.push(results[i].geometry.location);
+              createMarker(results[i]);
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(results[i].name));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+              
+            }
+            tb1.appendChild(tbdy);
+            body.appendChild(tb1);
+            for(var j = 1; j = array.length; j++){
+                arrayasstring.concat(String(array[j-1]));
+          	  if(i &lt; array.length){
+          		  arrayasstring.concat(",");
+          	  }
+            }
+            alert('array as string ' + arrayasstring);
+            //document.getElementById('form:nearbystoreslist').innerHTML = arrayasstring;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: pos,
+                
+              });
+         }
+          
+    }
+      function test(){
+    	  var body = document.getElementById('storesNearBy');
+    	  
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  
+          //if (status === google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i &lt; 4; i++) {
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(i));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+            }
+            
+            tb1.appendChild(tbdy);
+            body.appendChild(tb1);
+            //window.alert("check4");
+            
+         //}
+          
+      }
+      
+      document.onload(initMap());
+      
+    </script>
+</body>
+</html>

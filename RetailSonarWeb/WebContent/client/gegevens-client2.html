@@ -1,0 +1,440 @@
+<!DOCTYPE html >
+<html >
+<head>
+<title>GegevensTest</title>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet"/>
+    <link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css"/>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&libraries=places"></script>
+    <!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpMoN_XgtpVSQDogR9rzUJ4j3HUv8Y35w&callback=initMap">
+    </script>-->
+    <style>
+
+h1{
+	padding: 30px;
+	font-weight: bold;
+    font-size: 30px;
+}
+h2{
+	font-size:20px;
+	padding: 20px;
+}
+td{
+	text-align:center;
+	padding: 10px;
+}
+.opslaan{
+	height:auto;
+	width:auto;
+	margin-top:20px;
+	margin-bottom:30px;
+	padding: 10px;
+	background-color:#ff6d0e;
+	border-radius:12px;
+	font-size:20px;
+	text-align:center;
+	
+}
+.opslaan:hover{
+	cursor:pointer;
+}
+.tablestyle{
+	text-align: center;
+	width:auto;
+	border: 2px solid black;
+	border-radius:12px;	
+	margin-right:100px;
+	margin-left:100px;
+	padding:30px;
+}
+.input{
+	width:100%;
+}
+.map{
+	width:auto;
+	height:500px;
+	background:white;
+	margin: 20px 100px 20px 100px;
+	border:2px solid black;
+	border-radius:12px;
+}
+.map2{
+	width:auto;
+	height:auto;
+	background:white;
+	margin: 20px 100px 20px 100px;
+	border:2px solid black;
+	border-radius:12px;
+	text-align:center;
+}
+
+    </style>
+</head>
+<body>
+	
+	<header>
+      <img class="logo" src="/RetailSonarWeb/images/retailsonar.svg" alt="heart" />
+     <!--<button class="logout" onclick="logoutFunction()">Log Out</button>-->
+    </header>
+    <div style="height:30px;"></div>
+    <div style="height:50px;">
+    <h1>Gegevens</h1>
+    </div>
+    <h2>Algemene Gegevens</h2>
+    <div class="tablestyle">
+	    <table style="width:100%;">
+	    	<tr>
+	    		<td>Naam</td>
+	    		<td> <input id="naamFiliaal" type="text" class="input" data-value="#{GegevensController.gebruikerGegevens.naamFiliaal}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Straat</td>
+	    		<td><input id="straat" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Nummer</td>
+	    		<td><input id="nummer" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Postcode</td>
+	    		<td><input id="postcode" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Gemeente</td>
+	    		<td><input id="gemeente" type="text"  class="input" data-value="#{}" required/></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Ouput Test</td>
+	    		<td><output  class="ouput" data-value="tests"></output></td>
+	    		<td></td>
+	    	</tr>
+	    </table>
+    </div>
+    <h2>Gebouw Eigenschappen</h2>
+    <div class="tablestyle">
+	    <table style="width:100%;">
+	    	<tr>
+	    		<td>Oppervlakte</td>
+	    		<td> <input id="oppervlakte" type="text" class="input" data-value="#{}" required/></td>
+	    		<td>Vierkante meter</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Gevelbreedte</td>
+	    		<td><input id="gevelBreedte" type="text"  class="input" data-value="#{}" required/></td>
+	    		<td>Meter</td>
+	    	</tr>
+	    	<tr>
+	    		<td>GevelHoogte</td>
+	    		<td><input id="gevelHoogte" type="text"  class="input" data-value="#{}" required/></td>
+	    		<td>Meter</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Zichtbaarheid</td>
+	    		<td><input id="zichtbaarheid" type="text"  class="input" data-value="#{}"/></td>
+	    		<td></td>
+	    	</tr>
+	    </table>
+    </div>
+    <h2>Financiële Eigenschappen</h2>
+    <div class="tablestyle">
+	    <table style="width:100%;">
+	    	<tr>
+	    		<td>Jaarlijkse Omzet</td>
+	    		<td> <input id="jaarlijkseOmzet" type="text" class="input" data-value="#{}" required/></td>
+	    		<td>euro</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Personeels Kosten</td>
+	    		<td><input id="personeelsKosten" type="text"  class="input" data-value="#{}" required/></td>
+	    		<td>euro</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Aantal PersoneelsLeden</td>
+	    		<td><input id="aantalPersoneelsLeden" type="text"  class="input" data-value="#{}" required/></td>
+	    		<td></td>
+	    	</tr>
+	    </table>
+    </div>
+    <div id="map" class="map"></div>
+    <div id="storesNearBy" class="map2" ></div>
+   
+    
+    
+    
+    <button id="submit" class="opslaan" onclick="">Opslaan</button>
+    <button id="nearbyS" class="opslaan" onclick="#{}">Zoek Winkels</button>
+    <button id="Back" class="opslaan" onclick="#{}">Terug</button>
+    <!-- ><button id="create" class="opslaan">Create file</button> 
+        <a class="opslaan" href="Gegevens.txt" id="downloadlink" style="display: none;color:black;" download>Download</a>
+    
+    <textarea id="textbox">Type something here</textarea> -->
+    <button id="create" class="opslaan" >Create file</button> 
+        <a download="info.txt" id="downloadlink" style="display: none" class = "opslaan">Download</a>
+   
+   <script>
+   		function test2(){
+   			window.alert("test2");
+   			var object = Packages.jsf.controller.GebruikerController.test();
+   			window.alert(object.value);
+   			
+   		}
+   </script>
+    <script>
+    var resultLat = "lat: ";
+    var resultLng = "lng: ";
+    var resultTot = "";
+    var resp = {lat: 51.0543422, lng: 3.717424299999948};
+    var map;
+    var pos;
+      function initMap() {
+    	  
+    	var mapOptions = {
+    			zoom: 8,
+    	          center: {lat: 50.83, lng: 4.35},
+    	          mapTypeId: google.maps.MapTypeId.roadmap,
+    	  	    clickableIcons:false,
+    	  	    disableDoubleClickZoom:true,
+    	  	    draggable:false,
+    	  	    fullscreenControl:false,
+    	  	    keyboardShortcuts:false,
+    	  	    mapTypeControl:false,
+    	  	    panControl:false,
+    	  	    rotateControl:false,
+    	  	    scaleControl:false,
+    	  	    scrollwheel:false,
+    	  	    streetViewControl:false,
+    	  	    zoomControl:false,		
+    	};
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var geocoder = new google.maps.Geocoder();
+        
+        
+        
+
+        
+        document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, map);
+        });
+        
+        document.getElementById('nearbyS').addEventListener('click', function() {
+           nearBySearch();
+        	//test();  
+        });
+        
+      }
+	  
+      function geocodeAddress(geocoder, resultsMap) {
+    	  map = resultsMap;
+    	  var space =" ";
+    	    var straat = document.getElementById('straat').value;
+    	    var nummer = document.getElementById('nummer').value;
+    	    var postcode = document.getElementById('postcode').value;
+    	    var gemeente = document.getElementById('gemeente').value;
+          var address = straat.concat(space).concat(nummer).concat(space).concat(gemeente);
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            pos = results[0].geometry.location;
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+              
+            });
+            resultsMap.setZoom(15);
+            
+          } 
+        });
+      }        
+      function nearBySearch(){
+    	  var mapOptions = {
+      			zoom: 15,
+      	          center: pos,
+      	          mapTypeId: google.maps.MapTypeId.roadmap,
+      	  	    clickableIcons:false,
+      	  	    disableDoubleClickZoom:true,
+      	  	    draggable:false,
+      	  	    fullscreenControl:false,
+      	  	    keyboardShortcuts:false,
+      	  	    mapTypeControl:false,
+      	  	    panControl:false,
+      	  	    rotateControl:false,
+      	  	    scaleControl:false,
+      	  	    scrollwheel:false,
+      	  	    streetViewControl:false,
+      	  	    zoomControl:false,		
+      	};
+    	  map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    	  var service = new google.maps.places.PlacesService(map);
+    	  infowindow = new google.maps.InfoWindow();
+    	  alert('service about to be called, position: ' + pos);
+		  service.nearbySearch({
+	          location: pos,
+	          radius: 500,
+	          type: ['supermarket', 'store']
+	        }, call);
+	  }
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+          var marker = new google.maps.Marker({
+              map: map,
+              position: pos,
+              
+            });
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+      function call(results, status) {
+    	  alert('call started');
+    	  var body = document.getElementById('storesNearBy');
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+        	  
+            for (var i = 0; i < results.length; i++) {
+              createMarker(results[i]);
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(results[i].name));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+              
+            }
+            tb1.appendChild(tbdy);
+            body.appendChild(tb1);
+         }
+          
+    }
+      function test(){
+    	  var body = document.getElementById('storesNearBy');
+    	  
+    	  var tb1 = document.createElement('table');
+    	  var tbdy = document.createElement('tbody');
+    	  
+          //if (status === google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < 4; i++) {
+              var tr = document.createElement('tr');
+              var td = document.createElement('td');
+              td.appendChild(document.createTextNode(i));
+              tr.appendChild(td);
+              tbdy.appendChild(tr);
+            }
+            
+            tb1.appendChild(tbdy);
+            body.appendChild(tb1);
+            //window.alert("check4");
+            
+         //}
+          
+      }
+      
+      document.onload(initMap());
+      
+    </script>
+    <!-- <script>
+    window.onload = function(){
+        var textFile = null,
+
+        makeTextFile = function (text) {
+                            var data = new Blob([text], {type: 'text/plain'});
+
+                            // If we are replacing a previously generated file we need to
+                            // manually revoke the object URL to avoid memory leaks.
+                            if (textFile !== null) {
+                              window.URL.revokeObjectURL(textFile);
+                            }
+
+                            textFile = window.URL.createObjectURL(data);
+
+                            return textFile;
+                        };
+
+        var create = document.getElementById('create'),
+        naam = document.getElementById(naamFiliaal),
+        straat = document.getElementById(straat),
+        nummer = document.getElementById(nummer),
+        postcode = document.getElementById(postcode),
+        gemeente = document.getElementById(gemeente),
+        oppervlakte = document.getElementById(oppervlakte),
+        gevelBreedte = document.getElementById(gevelBreedte),
+        gevelHoogte = document.getElementById(gevelHoogte),
+        zichtbaarheid = document.getElementById(zichtbaarheid),
+        jaarlijkseOmzet = document.getElementById(jaarlijkseOmzet),
+        personeelsKosten = document.getElementById(personeelsKosten),
+        aantalPersoneelsLeden = document.getElementById(aantalPersoneelsLeden);
+        
+        var text = naam.concat(straat),//," ",nummer," ",postcode," ",gemeente," ",oppervlakte," ",gevelBreedte," ",gevelHoogte," ",zichtbaarheid," ",jaarlijkseOmzet," ",personeelsKosten," ", aaantalPersoneelsLeden);
+		textbox = 'text';
+        create.addEventListener('click', function () {
+        									alert("CLICK");
+                                            var link = document.getElementById('downloadlink');
+                                            link.href = makeTextFile(textbox);
+                                            link.style.display = 'block';
+                                        }, false);
+    };
+    </script>-->
+    <script>
+    window.onload = function(){
+        var textFile = null,
+		
+        makeTextFile = function (text) {
+                            var data = new Blob([text], {type: 'text/plain'});
+
+                            // If we are replacing a previously generated file we need to
+                            // manually revoke the object URL to avoid memory leaks.
+                            if (textFile !== null) {
+                              window.URL.revokeObjectURL(textFile);
+                            }
+
+                            textFile = window.URL.createObjectURL(data);
+
+                            return textFile;
+                        };
+
+        var create = document.getElementById('create');
+        //textbox = document.getElementById('textbox');
+
+        create.addEventListener('click', function () {
+        	var naam = document.getElementById('naamFiliaal').value,
+            straat = document.getElementById('straat').value,
+            nummer = document.getElementById('nummer').value,
+            postcode = document.getElementById('postcode').value,
+            gemeente = document.getElementById('gemeente').value,
+            oppervlakte = document.getElementById('oppervlakte').value,
+            gevelBreedte = document.getElementById('gevelBreedte').value,
+            gevelHoogte = document.getElementById('gevelHoogte').value,
+            zichtbaarheid = document.getElementById('zichtbaarheid').value,
+            jaarlijkseOmzet = document.getElementById('jaarlijkseOmzet').value,
+            personeelsKosten = document.getElementById('personeelsKosten').value,
+            aantalPersoneelsLeden = document.getElementById('aantalPersoneelsLeden').value;
+        	var k = 'Naam ';
+        	var textbox = k.concat(naam,'\nStraat ',straat,'\Nummer ',nummer,'\nPostcode ',postcode,'\nGemeente ',gemeente,'\nOppervlakte ',oppervlakte,'\nGevelBreedte ', gevelBreedte,'\nGevelHoogte ',gevelHoogte,'\nZichtbaarheid ',zichtbaarheid,'\nJaarlijks Omzet ',jaarlijkseOmzet,'\nPersoneels Kosten ',personeelsKosten,'\nAantal Personeelsleden ',aantalPersoneelsLeden);
+                                            var link = document.getElementById('downloadlink');
+                                            link.href = makeTextFile(textbox);
+                                            link.style.display = 'block';
+                                        }, false);
+    };
+    </script>
+    
+    
+</body>
+</html>

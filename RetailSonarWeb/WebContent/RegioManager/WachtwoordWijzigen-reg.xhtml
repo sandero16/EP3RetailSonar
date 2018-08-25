@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+	<title>Retail Sonar</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+	
+	<!-- <script src="/script.js" defer></script>-->
+	<link rel="shortcut icon" type="image/x-icon" href="/RetailSonarWeb/images/favicon.png" />
+</h:head>
+
+<body>
+	<div class="header">
+		<h:form>
+			<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+				alt="heart" />
+			<!--<h:commandButton class="logout"
+				action="#{FiliaalController.logoutFunction()}" value='Log Out' />-->
+			
+		</h:form>
+	</div>
+
+	<div class="leading">
+		<p class="leading-bigtext">Instellingen</p>
+		<p class="leading-text"></p>
+	</div>
+	
+	<h2>Wachtwoord wijzigen</h2>
+	<h:form id="form">
+		
+	<f:event listener="#{UserController.checkPasswordUser}" type="postValidate" />
+		<div id="table" class="tablestyle">
+			<table style="width:100%;">
+				<tr>
+					<td><h:outputLabel  value="Gebruikersnaam"/></td>
+					<td><h:outputText id="username" style="width:auto" value="#{UserController.loggedInUser.username}"/></td>
+					<td><h:outputLabel id="usernamemessage" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel  value="Nieuw Wachtwoord"/></td>
+					<td><h:inputSecret id="userPassword" class="input" value="#{UserController.newPassword}" required="true" />
+					<h:message for="userPassword" style="color:red"/></td>
+					
+				</tr>
+				<tr>
+					<td><h:outputLabel  value="Controle nieuw Wachtwoord"/></td>
+					<td><h:inputSecret id="userPasswordValidation" class="input"  required="true" />
+					<h:message for="userPasswordValidation" style="color:red"/></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel id="allmessage" style="color:red;"/></td>
+					<td><h:outputLabel id="wachtwoordmessage" style="color:red;"/></td>
+				</tr>
+			</table>
+		</div>
+		
+		<h:commandButton id="submitbean" class="opslaan" action="#{UserController.changePasswordUser()}"
+			 value="Opslaan"  />
+		
+		</h:form>
+		
+</body>
+</html>  

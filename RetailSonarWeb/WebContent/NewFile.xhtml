@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<!-- <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>BootsFaces Basic Page</title>
+    </h:head>
+    <h:body>
+
+    <b:modal title="Modal Example" styleClass="responsiveModalPseudoClass"
+         id="responsiveModal">
+  <b:dataTable value="#{carPool.carPool}"
+               var="car"
+               widgetVar="tableWidgetVar"
+               responsive="true"
+               scroll-horizontally="true">
+    <b:dataTableColumn value="#{car.brand}" />
+    <b:dataTableColumn value="#{car.type}" />
+    <b:dataTableColumn value="#{car.color}" />
+    <b:dataTableColumn value="#{car.year}"  order="asc" />
+    <b:dataTableColumn value="#{car.price}" />
+    <b:dataTableColumn value="#{car.enginePower}" label="Engine Power (hp)" />
+    <b:dataTableColumn value="#{car.brand}" />
+    <b:dataTableColumn value="#{car.type}" />
+    <b:dataTableColumn value="#{car.color}" />
+  </b:dataTable>
+  <f:facet name="footer">
+    <b:button value="Close" dismiss="modal" />
+    <b:button value="Ok" look="primary" dismiss="modal" />
+  </f:facet>
+</b:modal>
+<b:row>
+  <b:column span="3">
+    <a class="btn btn-primary btn-lg" href="#responsiveModal" data-toggle="modal">Trigger (HTML A tag)</a>
+  </b:column>
+  <b:column span="3">
+    <b:button value="Trigger (JavaScript)" look="success"
+              onclick="$('.responsiveModalPseudoClass').modal();tableWidgetVar.DataTable().responsive.recalc();"
+              size="lg"/>
+  </b:column>
+</b:row>
+
+</h:body>
+</html>-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<title>BootsFaces Basic Page</title>
+</h:head>
+<h:body>
+<p:button  value="Bookmark" icon="ui-icon-star">
+    <f:param name="productId" value="10" />
+</p:button>
+ 
+<p:button  value="With Icon" icon="ui-icon-star">
+    <f:param name="productId" value="20" />
+</p:button>
+ 
+<p:button  icon="ui-icon-star" title="Icon Only">
+    <f:param name="productId" value="30" />
+</p:button>
+ 
+<p:button value="Bookmark" icon="ui-icon-star" disabled="true">
+    <f:param name="productId" value="40" />
+</p:button>
+	</h:body>
+</html>

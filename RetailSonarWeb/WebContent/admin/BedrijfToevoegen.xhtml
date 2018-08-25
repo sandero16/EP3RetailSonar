@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/reset.css" />
+<link href="https://fonts.googleapis.com/css?family=Quicksand"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/RetailSonarWeb/assets/css/styles.css" />
+<title>Bedrijf Toevoegen</title>
+</head>
+
+<body>
+	<div class="header">
+		<img class="logo" src="/RetailSonarWeb/images/retailsonar.svg"
+			alt="heart" />
+		
+	</div>
+	<div class="leading">
+		<p class="leading-bigtext">Bedrijf Toevoegen</p>
+		<p class="leading-text"></p>
+	</div>
+	<h2>Algemene Gegevens Hoofdzetel</h2>
+	<h:form>
+		<div class="tablestyle">
+			<table style="width: 100%;">
+				<tr>
+					<td>Naam Bedrijf</td>
+					<!-- bij value komt iets zoals: #{bedrijfController.getBedrijf().naamBedrijf} -->
+					<td><h:inputText id="naamFiliaal" class="input"
+							value="#{bedrijfController.getBedrijf().naam}" required="true"
+							requiredMessage="Voer een naam in voor het bedrijf" />
+						<h:message for="naamFiliaal" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Straat</td>
+					<td><h:inputText id="straat" class="input"
+							value="#{bedrijfController.bedrijf.straat}" required="true"
+							requiredMessage="Voer een straat in" />
+						<h:message for="straat" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Nummer</td>
+					<td><h:inputText id="nummer" class="input"
+							value="#{bedrijfController.bedrijf.nummer}" required="true"
+							requiredMessage="Voer een nummer in" />
+						<h:message for="nummer" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Postcode</td>
+					<td><h:inputText id="postcode" class="input"
+							value="#{bedrijfController.bedrijf.postcode}" required="true"
+							requiredMessage="Voer een postcode in" />
+						<h:message for="postcode" style="color: red;" /></td>
+				</tr>
+				<tr>
+					<td>Gemeente</td>
+					<td><h:inputText id="gemeente" class="input"
+							value="#{bedrijfController.bedrijf.gemeente}" required="true"
+							requiredMessage="Voer een gemeente in" />
+						<h:message for="gemeente" style="color: red;" /></td>
+				</tr>
+
+			</table>
+		</div>
+		
+
+		<h:commandButton id="submit" class="opslaan"
+			action="#{bedrijfController.maakBedrijf}" value="Opslaan">
+			<f:ajax execute="@form" />
+		</h:commandButton>
+	</h:form>
+
+</body>
+</html>
